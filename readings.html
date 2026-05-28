@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Readings — SDDO Notes</title>
+<meta name="theme-color" content="#2E4374">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/notes.css">
+</head>
+<body>
+
+<header class="masthead">
+    <div class="container masthead-inner">
+        <a class="brand" href="index.html"><span class="brand-mark">S</span> SDDO Notes <small>· IE BCSAI 2025</small></a>
+        <ul class="menu">
+            <li><a href="index.html">Topics</a></li>
+            <li><a href="readings.html" class="active">Readings</a></li>
+            <li><a href="project.html">Project</a></li>
+            <li><a href="quiz.html">Quiz &amp; Exam</a></li>
+        </ul>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="container">
+        <span class="eyebrow">Course bibliography</span>
+        <h1>Required &amp; recommended <em>readings</em>.</h1>
+        <p class="lead">
+            Four books. Two are foundational (you should at minimum skim them). Two are
+            operational classics worth keeping on the shelf for the rest of your career.
+        </p>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <span class="eyebrow">The DevOps canon</span>
+                <h2>Books</h2>
+            </div>
+        </div>
+        <div class="book-list">
+            <div class="book">
+                <h3>The DevOps Handbook (2nd ed.)</h3>
+                <p class="author">Gene Kim · Jez Humble · Patrick Debois · John Willis</p>
+                <p>The operational bible. The "Three Ways" — flow, feedback, continual learning —
+                are the spine of the course. Read chapters on deployment pipelines, telemetry, and
+                psychological safety even if you skip everything else.</p>
+                <a href="pdfs/readings/devops-handbook.pdf">Open PDF →</a>
+            </div>
+
+            <div class="book">
+                <h3>Accelerate</h3>
+                <p class="author">Nicole Forsgren · Jez Humble · Gene Kim</p>
+                <p>The research behind the practice. Defines and measures the four DORA metrics:
+                deployment frequency, lead time for changes, change failure rate, time to
+                restore. If you remember one phrase from this book it's "elite performers deploy
+                multiple times a day with low failure rates."</p>
+                <a href="pdfs/readings/accelerate.pdf">Open PDF →</a>
+            </div>
+
+            <div class="book">
+                <h3>Team Topologies</h3>
+                <p class="author">Matthew Skelton · Manuel Pais</p>
+                <p>How to organise the people, not just the code. Four team types
+                (stream-aligned, platform, enabling, complicated-subsystem) and three interaction
+                modes (collaboration, X-as-a-service, facilitating). The book that explains why
+                "you build it, you run it" actually works.</p>
+                <a href="pdfs/readings/team-topologies.pdf">Open PDF →</a>
+            </div>
+
+            <div class="book">
+                <h3>Essentials of Software Engineering</h3>
+                <p class="author">Frank Tsui · Orlando Karam · Barbara Bernal</p>
+                <p>The textbook. Use it as a reference for SDLC models, requirements analysis,
+                and software-quality definitions. Less of a cover-to-cover read; more of a glossary
+                with examples.</p>
+                <a href="pdfs/readings/essentials-of-software-engineering.pdf">Open PDF →</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section style="background:#fff;border-top:1px solid var(--rule)">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <span class="eyebrow">How to read them</span>
+                <h2>A practical order</h2>
+            </div>
+        </div>
+        <ol style="font-family:var(--font-serif);font-size:1.15rem;line-height:1.7;max-width:62ch">
+            <li><strong>The DevOps Handbook</strong> — Parts 1 &amp; 2 (chapters 1–10). The other
+                parts are case studies; skim those.</li>
+            <li><strong>Accelerate</strong> — Part 1 only. Part 2 is methodology; you don't need
+                it unless you're doing the research.</li>
+            <li><strong>Team Topologies</strong> — chapters 4–7. The team types and interaction
+                modes are the meat.</li>
+            <li><strong>Essentials of SE</strong> — index it; reach for it when you need a
+                rigorous definition.</li>
+        </ol>
+    </div>
+</section>
+
+<footer class="colophon">
+    <div class="container">
+        <span>SDDO course notes · IE University · BCSAI · 2025</span>
+        <span><a href="index.html">← Back to topics</a></span>
+    </div>
+</footer>
+
+</body>
+</html>

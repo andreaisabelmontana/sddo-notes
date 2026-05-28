@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SDDO — Course Notes · IE University BCSAI 2025</title>
+<meta name="description" content="Course notes for Software Development & DevOps at IE University. Topic summaries, original slides, readings, project briefs, and past quizzes.">
+<meta name="theme-color" content="#2E4374">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/notes.css">
+</head>
+<body>
+
+<header class="masthead">
+    <div class="container masthead-inner">
+        <a class="brand" href="index.html">
+            <span class="brand-mark">S</span>
+            SDDO Notes <small>· IE BCSAI 2025</small>
+        </a>
+        <ul class="menu">
+            <li><a href="index.html" class="active">Topics</a></li>
+            <li><a href="readings.html">Readings</a></li>
+            <li><a href="project.html">Project</a></li>
+            <li><a href="quiz.html">Quiz & Exam</a></li>
+            <li><a href="pdfs/syllabus.pdf">Syllabus ↗</a></li>
+        </ul>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="container">
+        <span class="eyebrow">Software Development &amp; DevOps</span>
+        <h1>Course notes for <em>SDDO</em>.</h1>
+        <p class="lead">
+            A compact, navigable reference for the BCSAI course at IE University.
+            Each topic links to the original slides and reading; each section is
+            distilled into the points worth remembering at exam time and at work.
+        </p>
+        <div class="meta">
+            <span><strong>11</strong> topic summaries</span>
+            <span><strong>4</strong> textbook references</span>
+            <span><strong>3</strong> project briefs</span>
+            <span><strong>4</strong> past exam keys</span>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <span class="eyebrow">Part I · Foundations</span>
+                <h2>Topics</h2>
+                <p>Click a topic for the summary and a link to the original course material.</p>
+            </div>
+        </div>
+        <div class="topic-grid">
+            <a class="topic" href="topics/01-life-cycle.html">
+                <span class="num">01</span>
+                <h3>Software Development Life Cycle</h3>
+                <p>Why we model the build process. Waterfall, V, iterative, spiral, agile — and how to pick.</p>
+                <div class="tags"><span class="tag">SDLC</span><span class="tag">Models</span></div>
+            </a>
+            <a class="topic" href="topics/02-git.html">
+                <span class="num">02</span>
+                <h3>Git Basics</h3>
+                <p>Working tree, index, HEAD. Branching, merging, rebasing, and the conventions that scale.</p>
+                <div class="tags"><span class="tag">VCS</span><span class="tag">Workflow</span></div>
+            </a>
+            <a class="topic" href="topics/03-design-patterns.html">
+                <span class="num">03</span>
+                <h3>Design Patterns</h3>
+                <p>Creational, structural, behavioural. When a pattern is the right tool — and when it's noise.</p>
+                <div class="tags"><span class="tag">GoF</span><span class="tag">OOP</span></div>
+            </a>
+            <a class="topic" href="topics/04-code-smells.html">
+                <span class="num">04</span>
+                <h3>Bad Practices &amp; Code Smells</h3>
+                <p>The patterns to avoid. Long methods, duplication, magic numbers, god objects, primitive obsession.</p>
+                <div class="tags"><span class="tag">Refactoring</span><span class="tag">SOLID</span></div>
+            </a>
+            <a class="topic" href="topics/05-architectures.html">
+                <span class="num">05</span>
+                <h3>Software Architectures</h3>
+                <p>Monolith, N-tier, hexagonal, microservices. A side-by-side comparison and when each wins.</p>
+                <div class="tags"><span class="tag">Architecture</span><span class="tag">Design</span></div>
+            </a>
+            <a class="topic" href="topics/06-testing.html">
+                <span class="num">06</span>
+                <h3>Testing</h3>
+                <p>The pyramid: unit, integration, end-to-end. Coverage as a floor, not a ceiling. Testing microservices.</p>
+                <div class="tags"><span class="tag">QA</span><span class="tag">Pyramid</span></div>
+            </a>
+            <a class="topic" href="topics/07-scrum.html">
+                <span class="num">07</span>
+                <h3>Scrum</h3>
+                <p>Roles, events, artifacts — and the principles that make agile fail when followed without thought.</p>
+                <div class="tags"><span class="tag">Agile</span><span class="tag">Process</span></div>
+            </a>
+            <a class="topic" href="topics/08-backend.html">
+                <span class="num">08</span>
+                <h3>Backend Components</h3>
+                <p>Web servers, app servers, databases, caches, message brokers, DNS — and how a request flows through them.</p>
+                <div class="tags"><span class="tag">Backend</span><span class="tag">Systems</span></div>
+            </a>
+            <a class="topic" href="topics/09-frontend.html">
+                <span class="num">09</span>
+                <h3>Frontend Foundations</h3>
+                <p>The browser as a runtime. HTML, CSS, JavaScript, and the rendering pipeline that ties them together.</p>
+                <div class="tags"><span class="tag">Web</span><span class="tag">Browser</span></div>
+            </a>
+            <a class="topic" href="topics/10-deployment.html">
+                <span class="num">10</span>
+                <h3>Software Deployment</h3>
+                <p>From a working tree to a running production server: artifacts, environments, strategies, rollback.</p>
+                <div class="tags"><span class="tag">DevOps</span><span class="tag">Release</span></div>
+            </a>
+            <a class="topic" href="topics/11-security.html">
+                <span class="num">11</span>
+                <h3>DevOps Security</h3>
+                <p>Shifting security left. Secrets, dependencies, images, transport, and the OWASP Top 10 in practice.</p>
+                <div class="tags"><span class="tag">Security</span><span class="tag">DevSecOps</span></div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section style="background:#fff;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <span class="eyebrow">Part II · Materials</span>
+                <h2>Beyond the slides</h2>
+                <p>Required and recommended readings, the project briefs, and the keys to the practice quizzes and midterm.</p>
+            </div>
+        </div>
+        <div class="topic-grid">
+            <a class="topic" href="readings.html">
+                <span class="num">Books</span>
+                <h3>Four readings</h3>
+                <p>Accelerate, The DevOps Handbook, Team Topologies, and the Essentials of Software Engineering.</p>
+            </a>
+            <a class="topic" href="project.html">
+                <span class="num">Project</span>
+                <h3>Individual assignments</h3>
+                <p>Assignment 1 (minimal app), Assignment 2 (improve with DevOps), and the group assignment brief.</p>
+            </a>
+            <a class="topic" href="quiz.html">
+                <span class="num">Exams</span>
+                <h3>Quiz &amp; midterm keys</h3>
+                <p>Marked keys for quiz A &amp; B and midterm A &amp; B, plus the dev-environment tutorial and the testing exercise.</p>
+            </a>
+        </div>
+    </div>
+</section>
+
+<footer class="colophon">
+    <div class="container">
+        <span>SDDO course notes · IE University · BCSAI · 2025</span>
+        <span>Companion to <a href="https://andreaisabelmontana.github.io/topliving-inmobiliaria/">topliving-inmobiliaria</a> (the project)</span>
+    </div>
+</footer>
+
+</body>
+</html>

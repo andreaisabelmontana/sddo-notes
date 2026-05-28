@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Project — SDDO Notes</title>
+<meta name="theme-color" content="#2E4374">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/notes.css">
+</head>
+<body>
+
+<header class="masthead">
+    <div class="container masthead-inner">
+        <a class="brand" href="index.html"><span class="brand-mark">S</span> SDDO Notes <small>· IE BCSAI 2025</small></a>
+        <ul class="menu">
+            <li><a href="index.html">Topics</a></li>
+            <li><a href="readings.html">Readings</a></li>
+            <li><a href="project.html" class="active">Project</a></li>
+            <li><a href="quiz.html">Quiz &amp; Exam</a></li>
+        </ul>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="container">
+        <span class="eyebrow">Coursework</span>
+        <h1>The <em>project</em> briefs.</h1>
+        <p class="lead">
+            Two individual assignments and one group brief. Assignment 1 ships a minimal app;
+            Assignment 2 turns it into a proper DevOps pipeline. The group assignment scales the
+            same ideas to a team.
+        </p>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <span class="eyebrow">Individual</span>
+                <h2>Assignment 1 — minimal application</h2>
+                <p>Pick a simple use case. Ship a working app with at least two of: CRUD,
+                persistent storage, REST endpoints, minimal UI. Document SDLC choice, architecture,
+                and reflection on how it scales.</p>
+            </div>
+            <a class="btn" href="pdfs/project/assignment-1.pdf">Open PDF</a>
+        </div>
+
+        <h3 style="margin-top:8px">Grading breakdown</h3>
+        <ul style="font-family:var(--font-serif);font-size:1.12rem;line-height:1.7">
+            <li><strong>60% Features</strong> — two working features (25% each) plus a third or
+                exceptional quality (10%).</li>
+            <li><strong>20% Documentation</strong> — SDLC justification, architecture diagram,
+                README that lets someone else run it.</li>
+            <li><strong>20% Code quality &amp; Git hygiene</strong> — readable code, meaningful
+                commits.</li>
+        </ul>
+    </div>
+</section>
+
+<section style="background:#fff;border-top:1px solid var(--rule)">
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <span class="eyebrow">Individual</span>
+                <h2>Assignment 2 — DevOps automation</h2>
+                <p>Take the Assignment 1 app and improve it: refactor with SOLID, add tests with
+                ≥70% coverage, CI pipeline, Docker, deploy to a cloud platform, expose
+                /health + metrics with Prometheus/Grafana, document everything.</p>
+            </div>
+            <a class="btn" href="pdfs/project/assignment-2.pdf">Open PDF</a>
+        </div>
+
+        <h3 style="margin-top:8px">Grading breakdown</h3>
+        <ul style="font-family:var(--font-serif);font-size:1.12rem;line-height:1.7">
+            <li>25% Code quality &amp; refactoring</li>
+            <li>20% Testing and coverage (≥70% gate)</li>
+            <li>20% CI/CD pipeline</li>
+            <li>20% Deployment and containerization</li>
+            <li>15% Monitoring and documentation</li>
+        </ul>
+
+        <div class="source-strip" style="margin-top:24px">
+            <div>
+                <div class="label">Reference implementation</div>
+                <div class="title">Top Living Inmobiliaria — the worked example</div>
+            </div>
+            <a class="btn" href="https://andreaisabelmontana.github.io/topliving-inmobiliaria/">Visit the site →</a>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="section-head">
+            <div>
+                <span class="eyebrow">Group</span>
+                <h2>Group assignment</h2>
+                <p>The team-sized version: bigger scope, more stakeholders, the same DevOps
+                discipline.</p>
+            </div>
+            <a class="btn" href="pdfs/project/group-assignment.pdf">Open PDF</a>
+        </div>
+    </div>
+</section>
+
+<footer class="colophon">
+    <div class="container">
+        <span>SDDO course notes · IE University · BCSAI · 2025</span>
+        <span><a href="index.html">← Back to topics</a></span>
+    </div>
+</footer>
+
+</body>
+</html>
