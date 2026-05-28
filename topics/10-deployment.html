@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>10 · Software Deployment — SDDO Notes</title>
+<meta name="theme-color" content="#2E4374">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/notes.css">
+</head>
+<body>
+
+<header class="masthead">
+    <div class="container masthead-inner">
+        <a class="brand" href="../index.html"><span class="brand-mark">S</span> SDDO Notes <small>· IE BCSAI 2025</small></a>
+        <ul class="menu">
+            <li><a href="../index.html" class="active">Topics</a></li>
+            <li><a href="../readings.html">Readings</a></li>
+            <li><a href="../project.html">Project</a></li>
+            <li><a href="../quiz.html">Quiz &amp; Exam</a></li>
+        </ul>
+    </div>
+</header>
+
+<article class="article container">
+    <div class="body">
+        <span class="num-eyebrow">10 · DevOps</span>
+        <h1>Software Deployment</h1>
+        <p class="lead">Deployment is the act of moving an artifact from "works on my machine" to
+        "serves real users". The discipline is automation, repeatability, and the ability to undo.</p>
+
+        <h2 id="pipeline">The CI/CD pipeline</h2>
+        <p>A pipeline is a sequence of stages, each running on every change. Typical stages:</p>
+        <ol>
+            <li><strong>Checkout</strong> the code.</li>
+            <li><strong>Install</strong> dependencies.</li>
+            <li><strong>Lint</strong> — static checks, formatter.</li>
+            <li><strong>Test</strong> — unit, integration, with coverage gate.</li>
+            <li><strong>Build</strong> — produce the deployable artifact (Docker image, JAR, zip).</li>
+            <li><strong>Scan</strong> — secrets, dependencies, image CVEs.</li>
+            <li><strong>Publish</strong> — push artifact to registry.</li>
+            <li><strong>Deploy</strong> — to staging on every PR, to production on
+                <code>main</code>.</li>
+        </ol>
+        <p><strong>CI</strong> = continuous <em>integration</em>: every change is merged often and
+        tested.<br>
+        <strong>CD</strong> = continuous <em>delivery</em> (always shippable) <em>or</em>
+        <em>deployment</em> (every green build ships automatically). Pick the level your team
+        and risk tolerance allow.</p>
+
+        <h2 id="artifacts">Artifacts &amp; environments</h2>
+        <p><strong>Build once, deploy many.</strong> The same artifact promoted from dev →
+        staging → production. Differences between environments live in configuration, never in
+        the artifact.</p>
+        <p>Standard environments:</p>
+        <ul>
+            <li><strong>Dev</strong> — engineers' branches; broken is fine.</li>
+            <li><strong>Staging</strong> — mirror of production, real data shape, synthetic
+                volume.</li>
+            <li><strong>Production</strong> — real users; every change reviewed.</li>
+        </ul>
+
+        <h2 id="containers">Containers &amp; orchestration</h2>
+        <p>A container packages the app with its OS-level dependencies. Same image runs on a
+        laptop, a CI runner, or a production node. Best practices:</p>
+        <ul>
+            <li>Multi-stage Dockerfile (builder stage installs, runtime stage copies only what's
+                needed).</li>
+            <li>Run as a non-root user.</li>
+            <li>Include a <code>HEALTHCHECK</code>.</li>
+            <li>Pin base image versions; never <code>:latest</code> in production.</li>
+            <li>Keep the image small — every MB is shipped to every node, every deploy.</li>
+        </ul>
+        <p>Orchestration (Kubernetes, ECS, Fly Machines, Nomad) handles scheduling, scaling,
+        rolling updates, and self-healing of those containers across many nodes.</p>
+
+        <h2 id="strategies">Deployment strategies</h2>
+        <ul>
+            <li><strong>Recreate</strong> — stop old, start new. Downtime. Only for batch jobs.</li>
+            <li><strong>Rolling</strong> — replace instances N at a time. No downtime; mixed
+                versions briefly serve traffic.</li>
+            <li><strong>Blue/green</strong> — full new fleet (green) deployed alongside the
+                current one (blue); flip traffic in one step. Fast rollback, double cost briefly.</li>
+            <li><strong>Canary</strong> — route a small % of traffic to the new version, watch
+                metrics, ramp up. The safest for risky changes.</li>
+            <li><strong>Feature flags</strong> — code is deployed but inactive. Toggle per user
+                cohort. Decouples deploy from release.</li>
+        </ul>
+
+        <h2 id="rollback">Rollback</h2>
+        <p>The most important property of a deploy is its inverse. If you cannot answer "how do
+        we go back to the previous version in under 5 minutes?", you do not have a deployment
+        process — you have a hope.</p>
+        <ul>
+            <li>Keep the previous artifact warm in the registry.</li>
+            <li>Database migrations should be backwards-compatible (expand-then-contract).</li>
+            <li>Feature flags let you "roll back" a feature without redeploying.</li>
+        </ul>
+
+        <h2 id="iac">Infrastructure as code</h2>
+        <p>The cloud config — VMs, networks, DNS records, IAM roles — lives in version-controlled
+        files (Terraform, Pulumi, CloudFormation). Changes go through the same PR review as
+        application code. No more "what did Pedro click in the AWS console last Tuesday?"</p>
+
+        <blockquote>
+            "If it isn't automated, it doesn't exist."
+        </blockquote>
+
+        <h2 id="exam">What to remember at exam time</h2>
+        <ul>
+            <li>CI vs CD vs CD: integration, delivery, deployment.</li>
+            <li>Build once, deploy many.</li>
+            <li>Five deployment strategies + when to pick each.</li>
+            <li>Rollback &gt; rolling-forward in an incident.</li>
+            <li>Migrations: expand → deploy code → contract.</li>
+        </ul>
+
+        <div class="source-strip">
+            <div>
+                <div class="label">Source · Slide deck</div>
+                <div class="title">Software Deployment — main deck + slides</div>
+            </div>
+            <a class="btn" href="../pdfs/content/10-deployment.pdf">Open PDF</a>
+        </div>
+    </div>
+
+    <aside>
+        <h4>On this page</h4>
+        <ul>
+            <li><a href="#pipeline">The CI/CD pipeline</a></li>
+            <li><a href="#artifacts">Artifacts &amp; environments</a></li>
+            <li><a href="#containers">Containers</a></li>
+            <li><a href="#strategies">Deployment strategies</a></li>
+            <li><a href="#rollback">Rollback</a></li>
+            <li><a href="#iac">Infrastructure as code</a></li>
+            <li><a href="#exam">For the exam</a></li>
+        </ul>
+        <h4>Continue</h4>
+        <ul>
+            <li><a href="09-frontend.html">← Previous</a></li>
+            <li><a href="11-security.html">Next: Security →</a></li>
+        </ul>
+    </aside>
+</article>
+
+<footer class="colophon">
+    <div class="container">
+        <span>SDDO course notes · IE University · BCSAI · 2025</span>
+        <span><a href="../index.html">← Back to topics</a></span>
+    </div>
+</footer>
+
+</body>
+</html>

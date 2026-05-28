@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>11 · DevOps Security — SDDO Notes</title>
+<meta name="theme-color" content="#2E4374">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/notes.css">
+</head>
+<body>
+
+<header class="masthead">
+    <div class="container masthead-inner">
+        <a class="brand" href="../index.html"><span class="brand-mark">S</span> SDDO Notes <small>· IE BCSAI 2025</small></a>
+        <ul class="menu">
+            <li><a href="../index.html" class="active">Topics</a></li>
+            <li><a href="../readings.html">Readings</a></li>
+            <li><a href="../project.html">Project</a></li>
+            <li><a href="../quiz.html">Quiz &amp; Exam</a></li>
+        </ul>
+    </div>
+</header>
+
+<article class="article container">
+    <div class="body">
+        <span class="num-eyebrow">11 · DevOps</span>
+        <h1>DevOps Security</h1>
+        <p class="lead">Security isn't a stage after deploy. It's a property of the whole pipeline:
+        secrets, dependencies, images, transport, runtime, and people. Shift it left so the cost
+        of a fix stays small.</p>
+
+        <h2 id="secrets">Secrets</h2>
+        <p>API keys, DB passwords, signing keys. Rule: never in the repo. Never in environment
+        variables checked into Docker images. Never logged.</p>
+        <ul>
+            <li>Local dev: <code>.env</code> file in <code>.gitignore</code>.</li>
+            <li>CI: provider-native secret store (GitHub Secrets, GitLab CI variables).</li>
+            <li>Production: a vault (HashiCorp Vault, AWS Secrets Manager, GCP Secret Manager).</li>
+            <li>Rotate regularly; revoke immediately when an engineer leaves.</li>
+        </ul>
+        <p>Pre-commit scan: <code>gitleaks</code>, <code>trufflehog</code>. They catch the
+        "oops, I committed AWS keys" before push.</p>
+
+        <h2 id="deps">Dependencies (supply chain)</h2>
+        <p>Most production code is dependencies. A vulnerability in one library means a
+        vulnerability in your app.</p>
+        <ul>
+            <li><strong>Pin versions</strong> in lockfiles (<code>requirements.txt</code> with
+                hashes, <code>package-lock.json</code>).</li>
+            <li><strong>Audit on every PR</strong>: <code>pip-audit</code>,
+                <code>npm audit</code>, <code>cargo audit</code>.</li>
+            <li><strong>Automated updates</strong>: Dependabot, Renovate. Small PRs you can
+                review one at a time.</li>
+            <li>Know your <strong>SBOM</strong> — software bill of materials. It's the manifest
+                of every dep in your image.</li>
+        </ul>
+
+        <h2 id="images">Container images</h2>
+        <ul>
+            <li>Use minimal base images (<code>alpine</code>, <code>distroless</code>,
+                <code>slim</code>).</li>
+            <li>Run as a non-root user.</li>
+            <li>Scan with <code>trivy</code>, <code>grype</code>, or your registry's built-in
+                scanner — fail the build on HIGH/CRITICAL CVEs (or at least surface them).</li>
+            <li>Don't bake secrets into images. Mount them at runtime.</li>
+            <li>Sign images (Sigstore / cosign) and verify signatures at deploy time.</li>
+        </ul>
+
+        <h2 id="transport">Transport</h2>
+        <ul>
+            <li>HTTPS everywhere. Free certs via Let's Encrypt; auto-renew.</li>
+            <li><strong>HSTS</strong> header forces browsers to use HTTPS for your domain.</li>
+            <li>Internal traffic: mTLS between services, or a service mesh (Linkerd, Istio).</li>
+            <li>Strong ciphers only. Disable TLS &lt; 1.2.</li>
+        </ul>
+
+        <h2 id="owasp">OWASP Top 10 (2021)</h2>
+        <ol>
+            <li><strong>Broken Access Control</strong> — users accessing what they shouldn't.
+                Enforce on the server; never trust the client.</li>
+            <li><strong>Cryptographic Failures</strong> — passwords in plain text, weak hashes,
+                missing TLS.</li>
+            <li><strong>Injection</strong> — SQL, NoSQL, OS command, LDAP. Use parameterised
+                queries; validate inputs.</li>
+            <li><strong>Insecure Design</strong> — security flaws baked into requirements.</li>
+            <li><strong>Security Misconfiguration</strong> — default credentials, open S3 buckets,
+                stack traces shown to users.</li>
+            <li><strong>Vulnerable &amp; Outdated Components</strong> — see Dependencies above.</li>
+            <li><strong>Identification &amp; Authentication Failures</strong> — weak passwords,
+                no rate-limit on login, sessions that never expire.</li>
+            <li><strong>Software &amp; Data Integrity Failures</strong> — trusting unsigned
+                updates, deserialising untrusted data.</li>
+            <li><strong>Security Logging &amp; Monitoring Failures</strong> — can't detect a
+                breach because you didn't log the right things.</li>
+            <li><strong>SSRF</strong> — server-side request forgery. Validate that the URL your
+                server fetches isn't pointing back at internal infrastructure.</li>
+        </ol>
+
+        <h2 id="runtime">Runtime &amp; observability</h2>
+        <ul>
+            <li>Rate-limit auth endpoints (login, password reset, /leads).</li>
+            <li>Log auth events; alert on anomalies (geographic shifts, failed-login spikes).</li>
+            <li>Use a WAF (Cloudflare, AWS WAF) for HTTP-layer protection.</li>
+            <li>Principle of least privilege at every layer: DB users, IAM roles, container
+                capabilities.</li>
+        </ul>
+
+        <h2 id="people">People</h2>
+        <ul>
+            <li>2FA on every account that can deploy or read production data.</li>
+            <li>Hardware keys (YubiKey) for high-privilege accounts.</li>
+            <li>Code review is a security control. So is pair programming.</li>
+            <li>Phishing-aware: 90% of breaches start with a believable email.</li>
+        </ul>
+
+        <blockquote>
+            "Security is not a product, it's a process." — Bruce Schneier. The pipeline is the
+            product; security is what it does.
+        </blockquote>
+
+        <h2 id="exam">What to remember at exam time</h2>
+        <ul>
+            <li>OWASP Top 10 — at least be able to recognise and define five of them.</li>
+            <li>Where secrets live in each environment (local / CI / prod).</li>
+            <li>Three container image hygiene rules.</li>
+            <li>"Shift left" — what it means and why it's cheaper.</li>
+            <li>HTTPS + HSTS + mTLS — what each gives you.</li>
+        </ul>
+
+        <div class="source-strip">
+            <div>
+                <div class="label">Source · Slides</div>
+                <div class="title">DevOps Security — main deck + slides</div>
+            </div>
+            <a class="btn" href="../pdfs/content/11-security.pdf">Open PDF</a>
+        </div>
+    </div>
+
+    <aside>
+        <h4>On this page</h4>
+        <ul>
+            <li><a href="#secrets">Secrets</a></li>
+            <li><a href="#deps">Dependencies</a></li>
+            <li><a href="#images">Container images</a></li>
+            <li><a href="#transport">Transport</a></li>
+            <li><a href="#owasp">OWASP Top 10</a></li>
+            <li><a href="#runtime">Runtime</a></li>
+            <li><a href="#people">People</a></li>
+            <li><a href="#exam">For the exam</a></li>
+        </ul>
+        <h4>Continue</h4>
+        <ul>
+            <li><a href="10-deployment.html">← Previous</a></li>
+            <li><a href="../index.html">All topics</a></li>
+        </ul>
+    </aside>
+</article>
+
+<footer class="colophon">
+    <div class="container">
+        <span>SDDO course notes · IE University · BCSAI · 2025</span>
+        <span><a href="../index.html">← Back to topics</a></span>
+    </div>
+</footer>
+
+</body>
+</html>

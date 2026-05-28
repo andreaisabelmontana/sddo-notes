@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>05 · Software Architectures — SDDO Notes</title>
+<meta name="theme-color" content="#2E4374">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/notes.css">
+</head>
+<body>
+
+<header class="masthead">
+    <div class="container masthead-inner">
+        <a class="brand" href="../index.html"><span class="brand-mark">S</span> SDDO Notes <small>· IE BCSAI 2025</small></a>
+        <ul class="menu">
+            <li><a href="../index.html" class="active">Topics</a></li>
+            <li><a href="../readings.html">Readings</a></li>
+            <li><a href="../project.html">Project</a></li>
+            <li><a href="../quiz.html">Quiz &amp; Exam</a></li>
+        </ul>
+    </div>
+</header>
+
+<article class="article container">
+    <div class="body">
+        <span class="num-eyebrow">05 · Foundations</span>
+        <h1>Software Architectures</h1>
+        <p class="lead">Architecture is the set of decisions that are expensive to change. Pick the
+        style that matches your team size, your deployment cadence, and the rate at which the
+        business demands new features.</p>
+
+        <h2 id="monolith">Monolith</h2>
+        <p>One codebase, one deployable, one process. The default. Fastest to build, cheapest to
+        run, simplest to reason about. Don't apologise for shipping one — most successful
+        companies were monoliths for years.</p>
+        <p>Watch-outs: shared database makes coupling implicit, deploys touch everything, a single
+        memory leak takes down the world. Solution: <em>modular</em> monolith — strict module
+        boundaries inside one process, so you can split later if you must.</p>
+        <p>See <a href="../pdfs/content/05.1-monolith.pdf">Monolith Architecture (sub-deck)</a>.</p>
+
+        <h2 id="n-tier">N-tier</h2>
+        <p>Layers stacked by responsibility: presentation, business, data. Most enterprise apps
+        of the 2000s. Discipline through layering; communication only downward.</p>
+        <p>Watch-outs: "anaemic domain model" — the business layer becomes a thin pass-through
+        because logic leaks into the presentation or data layer.</p>
+        <p>See <a href="../pdfs/content/05.2-n-tier.pdf">N-tier Architecture (sub-deck)</a>.</p>
+
+        <h2 id="hexagonal">Hexagonal (ports &amp; adapters)</h2>
+        <p>The domain sits at the centre. <em>Ports</em> are interfaces it exposes
+        (<code>OrderRepository</code>, <code>EmailSender</code>). <em>Adapters</em> are the
+        concrete implementations (Postgres, SES, REST handler). The domain knows nothing about
+        web, database, or message queue.</p>
+        <p>Why it matters: you can replace the database, swap the web framework, or test the
+        business rules <em>without</em> a server or a DB. The dependency arrow points
+        <strong>inward</strong>, always.</p>
+        <p>See <a href="../pdfs/content/05.3-hexagonal.pdf">Hexagonal Architecture (sub-deck)</a>.</p>
+
+        <h2 id="microservices">Microservices</h2>
+        <p>Each bounded context is a separate service with its own process, database, and
+        deploy. Communication via HTTP, gRPC, or async messaging.</p>
+        <p>Benefits: independent deploys, independent scaling, independent failure. Costs:
+        distributed-system problems become your daily reality — eventual consistency, network
+        failure, observability across services, schema evolution.</p>
+        <p>Rule: don't start with microservices. Reach for them when you can name a specific
+        organisational or scaling pain a monolith causes you today.</p>
+        <p>See <a href="../pdfs/content/05.4-microservices.pdf">Microservices Architecture (sub-deck)</a>.</p>
+
+        <h2 id="picking">Picking among them</h2>
+        <p>The honest decision tree:</p>
+        <ol>
+            <li>Team &lt; 10 engineers, &lt; 100k users: modular monolith. Stop reading.</li>
+            <li>Team 10–50, predictable traffic: N-tier or hex monolith.</li>
+            <li>Team 50+, independent product lines, conflicting deploy schedules: extract
+                microservices one at a time. Never big-bang.</li>
+        </ol>
+
+        <blockquote>
+            "If you can't build a monolith, what makes you think microservices are the answer?"
+            — Simon Brown.
+        </blockquote>
+
+        <h2 id="exam">What to remember at exam time</h2>
+        <ul>
+            <li>Draw each style and label its components.</li>
+            <li>One advantage and one disadvantage per style.</li>
+            <li>Hexagonal's dependency rule: outer depends on inner; inner never imports outer.</li>
+            <li>Microservices add operational complexity — they only pay off when their
+                independence pays off.</li>
+        </ul>
+
+        <div class="source-strip">
+            <div>
+                <div class="label">Source · Slide deck</div>
+                <div class="title">Software Architectures — main deck (+ five sub-decks)</div>
+            </div>
+            <a class="btn" href="../pdfs/content/05-architectures.pdf">Open PDF</a>
+        </div>
+    </div>
+
+    <aside>
+        <h4>On this page</h4>
+        <ul>
+            <li><a href="#monolith">Monolith</a></li>
+            <li><a href="#n-tier">N-tier</a></li>
+            <li><a href="#hexagonal">Hexagonal</a></li>
+            <li><a href="#microservices">Microservices</a></li>
+            <li><a href="#picking">Picking among them</a></li>
+            <li><a href="#exam">For the exam</a></li>
+        </ul>
+        <h4>Sub-decks</h4>
+        <ul>
+            <li><a href="../pdfs/content/05.1-monolith.pdf">Monolith</a></li>
+            <li><a href="../pdfs/content/05.2-n-tier.pdf">N-tier</a></li>
+            <li><a href="../pdfs/content/05.3-hexagonal.pdf">Hexagonal</a></li>
+            <li><a href="../pdfs/content/05.4-microservices.pdf">Microservices</a></li>
+            <li><a href="../pdfs/content/05.5-architectures-summary.pdf">Summary</a></li>
+        </ul>
+        <h4>Continue</h4>
+        <ul>
+            <li><a href="04-code-smells.html">← Previous</a></li>
+            <li><a href="06-testing.html">Next: Testing →</a></li>
+        </ul>
+    </aside>
+</article>
+
+<footer class="colophon">
+    <div class="container">
+        <span>SDDO course notes · IE University · BCSAI · 2025</span>
+        <span><a href="../index.html">← Back to topics</a></span>
+    </div>
+</footer>
+
+</body>
+</html>

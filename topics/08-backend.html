@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>08 · Backend Components — SDDO Notes</title>
+<meta name="theme-color" content="#2E4374">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/notes.css">
+</head>
+<body>
+
+<header class="masthead">
+    <div class="container masthead-inner">
+        <a class="brand" href="../index.html"><span class="brand-mark">S</span> SDDO Notes <small>· IE BCSAI 2025</small></a>
+        <ul class="menu">
+            <li><a href="../index.html" class="active">Topics</a></li>
+            <li><a href="../readings.html">Readings</a></li>
+            <li><a href="../project.html">Project</a></li>
+            <li><a href="../quiz.html">Quiz &amp; Exam</a></li>
+        </ul>
+    </div>
+</header>
+
+<article class="article container">
+    <div class="body">
+        <span class="num-eyebrow">08 · Systems</span>
+        <h1>Backend Components</h1>
+        <p class="lead">A walk from the user's keystroke to the database row and back, naming
+        every component the packet passes through.</p>
+
+        <h2 id="dns">1. DNS</h2>
+        <p>Names become addresses. The user types <code>topliving.com.co</code>; their resolver
+        (typically their OS, talking to their ISP or 1.1.1.1) walks the DNS tree from the root,
+        to <code>.co</code>, to <code>topliving.com.co</code>, until it gets an A or AAAA record
+        with an IP.</p>
+        <p>Record types worth knowing:</p>
+        <ul>
+            <li><strong>A</strong> — name → IPv4.</li>
+            <li><strong>AAAA</strong> — name → IPv6.</li>
+            <li><strong>CNAME</strong> — alias from one name to another.</li>
+            <li><strong>MX</strong> — mail server for the domain.</li>
+            <li><strong>TXT</strong> — free text, used for SPF, DKIM, verification.</li>
+            <li><strong>NS</strong> — which servers are authoritative for the zone.</li>
+        </ul>
+        <p>See <a href="../pdfs/content/08.3-dns-records.pdf">DNS Record Types (sub-deck)</a>.</p>
+
+        <h2 id="cdn">2. CDN / Edge</h2>
+        <p>For most requests, the closest CDN node responds. Static assets, cached pages, and
+        increasingly compute (edge functions) live here. The request only reaches your origin if
+        the CDN can't answer.</p>
+
+        <h2 id="lb">3. Load balancer</h2>
+        <p>Layer-4 (TCP) or Layer-7 (HTTP). Distributes traffic across application instances using
+        a strategy: round-robin, least-connections, IP-hash, or weighted. Also terminates TLS so
+        application servers can speak plain HTTP internally.</p>
+
+        <h2 id="app">4. Application server</h2>
+        <p>Where your code runs. Frameworks: Flask/FastAPI (Python), Express (Node), Spring
+        Boot (Java), Rails (Ruby). Behind it usually sits a process manager (gunicorn, uvicorn,
+        pm2) that runs N workers.</p>
+
+        <h2 id="cache">5. Cache</h2>
+        <p>An in-memory store sitting between the app and the database. Redis, Memcached. Caches
+        anything expensive to recompute: query results, sessions, rate-limit counters.</p>
+        <p>The hard part is invalidation. Strategies:</p>
+        <ul>
+            <li><strong>TTL</strong> — entries expire after N seconds. Simple, slightly stale.</li>
+            <li><strong>Write-through</strong> — every DB write also writes the cache.</li>
+            <li><strong>Cache-aside</strong> — read tries cache; on miss, reads DB and populates
+                cache.</li>
+        </ul>
+
+        <h2 id="db">6. Database</h2>
+        <p>Relational (Postgres, MySQL) vs document (MongoDB) vs key-value (Redis) vs columnar
+        (BigQuery, ClickHouse). The choice is driven by the access pattern, not by fashion.</p>
+        <p>Relational defaults are still the right answer for most apps. ACID guarantees, mature
+        tooling, joins. Pick something else when you have a concrete reason: planet-scale,
+        write-heavy time series, or schema that genuinely doesn't fit rows and columns.</p>
+
+        <h2 id="queue">7. Message broker / Queue</h2>
+        <p>RabbitMQ, Kafka, SQS, Redis streams. Decouples producers from consumers. Producer
+        publishes an event; one or more consumers process it asynchronously.</p>
+        <p>Use when:</p>
+        <ul>
+            <li>The work is too slow to keep the user waiting (sending an email, generating a
+                PDF, processing an image).</li>
+            <li>You want retries and dead-letter handling out of the box.</li>
+            <li>You need an audit log of every event that crossed the system.</li>
+        </ul>
+
+        <h2 id="object">8. Object storage</h2>
+        <p>S3, GCS, R2. Anything binary that isn't a database row: user uploads, generated
+        artifacts, backups. Cheap, durable, eventually consistent.</p>
+
+        <h2 id="flow">A request, end to end</h2>
+        <p>User clicks "search". Browser → DNS → CDN (miss) → LB → App server (Flask) → Redis
+        (miss) → Postgres (returns rows) → App formats JSON → response back through LB to user.
+        Total: ~80 ms. Anything slower is a problem to investigate.</p>
+
+        <h2 id="exam">What to remember at exam time</h2>
+        <ul>
+            <li>The eight components above, in order, and what each does.</li>
+            <li>Six DNS record types.</li>
+            <li>Cache invalidation strategies — TTL, write-through, cache-aside.</li>
+            <li>"Sync vs async" — when to put a queue in front of work.</li>
+        </ul>
+
+        <div class="source-strip">
+            <div>
+                <div class="label">Source · Slides</div>
+                <div class="title">Backend Components — main deck · Backend reference · DNS records</div>
+            </div>
+            <a class="btn" href="../pdfs/content/08-backend-components.pdf">Open PDF</a>
+        </div>
+    </div>
+
+    <aside>
+        <h4>On this page</h4>
+        <ul>
+            <li><a href="#dns">DNS</a></li>
+            <li><a href="#cdn">CDN / Edge</a></li>
+            <li><a href="#lb">Load balancer</a></li>
+            <li><a href="#app">App server</a></li>
+            <li><a href="#cache">Cache</a></li>
+            <li><a href="#db">Database</a></li>
+            <li><a href="#queue">Message broker</a></li>
+            <li><a href="#object">Object storage</a></li>
+            <li><a href="#flow">A request, end to end</a></li>
+            <li><a href="#exam">For the exam</a></li>
+        </ul>
+        <h4>Continue</h4>
+        <ul>
+            <li><a href="07-scrum.html">← Previous</a></li>
+            <li><a href="09-frontend.html">Next: Frontend →</a></li>
+        </ul>
+    </aside>
+</article>
+
+<footer class="colophon">
+    <div class="container">
+        <span>SDDO course notes · IE University · BCSAI · 2025</span>
+        <span><a href="../index.html">← Back to topics</a></span>
+    </div>
+</footer>
+
+</body>
+</html>

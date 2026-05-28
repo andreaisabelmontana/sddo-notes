@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>09 · Frontend Foundations — SDDO Notes</title>
+<meta name="theme-color" content="#2E4374">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/notes.css">
+</head>
+<body>
+
+<header class="masthead">
+    <div class="container masthead-inner">
+        <a class="brand" href="../index.html"><span class="brand-mark">S</span> SDDO Notes <small>· IE BCSAI 2025</small></a>
+        <ul class="menu">
+            <li><a href="../index.html" class="active">Topics</a></li>
+            <li><a href="../readings.html">Readings</a></li>
+            <li><a href="../project.html">Project</a></li>
+            <li><a href="../quiz.html">Quiz &amp; Exam</a></li>
+        </ul>
+    </div>
+</header>
+
+<article class="article container">
+    <div class="body">
+        <span class="num-eyebrow">09 · Systems</span>
+        <h1>Frontend Foundations</h1>
+        <p class="lead">The browser is a runtime: HTML defines structure, CSS defines presentation,
+        JavaScript defines behaviour. Together they get parsed, laid out, painted, and made
+        interactive.</p>
+
+        <h2 id="html">HTML — structure</h2>
+        <p>A tree of elements. Semantic tags (<code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>,
+        <code>&lt;article&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;footer&gt;</code>)
+        encode meaning beyond layout. Screen readers, search engines, and your future self all
+        benefit.</p>
+        <p>Rule: <em>never</em> reach for <code>&lt;div&gt;</code> when a more specific element
+        exists. <code>&lt;button&gt;</code>, not <code>&lt;div onclick&gt;</code>.</p>
+
+        <h2 id="css">CSS — presentation</h2>
+        <p>Selectors target elements; the cascade resolves conflicts. Modern CSS has flexbox and
+        grid for layout (don't use floats anymore), custom properties (<code>--var</code>) for
+        theming, and container queries for responsive components.</p>
+        <p>Box model: every element is a box made of content, padding, border, margin.
+        <code>box-sizing: border-box</code> is the sane default — width includes padding and
+        border.</p>
+
+        <h2 id="js">JavaScript — behaviour</h2>
+        <p>A single-threaded event loop. Synchronous code blocks the UI; async code (promises,
+        <code>await</code>) yields back to the loop so the browser can render and respond.</p>
+        <p>The DOM is the browser's runtime tree of elements. JS reads and mutates it. Modern
+        frameworks (React, Vue, Svelte) abstract this — you describe the UI declaratively and the
+        framework reconciles the DOM for you.</p>
+
+        <h2 id="render">The render pipeline</h2>
+        <ol>
+            <li><strong>Parse HTML</strong> → DOM tree.</li>
+            <li><strong>Parse CSS</strong> → CSSOM tree.</li>
+            <li><strong>Combine</strong> → Render tree (DOM + visible styles).</li>
+            <li><strong>Layout</strong> — compute geometry: where each box sits.</li>
+            <li><strong>Paint</strong> — fill pixels.</li>
+            <li><strong>Composite</strong> — assemble layers (transforms, fixed positioning) onto
+                the screen.</li>
+        </ol>
+        <p>Slow rendering usually means slow layout (changing geometry forces re-flow of
+        descendants). Animate <code>transform</code> and <code>opacity</code> — those skip layout
+        and paint, only re-composite.</p>
+
+        <h2 id="perf">Performance basics</h2>
+        <ul>
+            <li>Compress and lazy-load images.</li>
+            <li>Inline critical CSS; defer the rest.</li>
+            <li>Use <code>preconnect</code> for known third-party origins.</li>
+            <li>Avoid layout thrash: read all measurements, then write all mutations.</li>
+            <li>Measure Core Web Vitals: LCP (largest paint), INP (interaction latency), CLS
+                (layout shift).</li>
+        </ul>
+
+        <h2 id="accessibility">Accessibility (a11y)</h2>
+        <p>Not optional. Cheap to do well from the start, expensive to retrofit:</p>
+        <ul>
+            <li>Semantic HTML does 80% of the work.</li>
+            <li>All interactive elements reachable by keyboard.</li>
+            <li>Visible focus styles.</li>
+            <li>Sufficient colour contrast (WCAG AA: 4.5:1 for body text).</li>
+            <li><code>alt</code> on every meaningful image; empty <code>alt=""</code> on
+                decorative ones.</li>
+        </ul>
+
+        <h2 id="frameworks">Frameworks vs vanilla</h2>
+        <p>Frameworks help when state is complex and the UI updates frequently. They hurt when
+        the page is mostly static or content-driven. The Top Living and SDDO sites in these notes
+        are vanilla HTML+CSS+JS — appropriate for content-heavy, low-state projects.</p>
+
+        <blockquote>
+            The fastest framework is no framework. The most maintainable framework is the one the
+            team already knows. Choose accordingly.
+        </blockquote>
+
+        <h2 id="exam">What to remember at exam time</h2>
+        <ul>
+            <li>HTML/CSS/JS = structure/presentation/behaviour.</li>
+            <li>Box model components in order.</li>
+            <li>Render pipeline steps in order, and which mutations cause which step.</li>
+            <li>Semantic HTML is the foundation of accessibility.</li>
+        </ul>
+
+        <div class="source-strip">
+            <div>
+                <div class="label">Source · Slides</div>
+                <div class="title">Frontend Foundations — slides + reference</div>
+            </div>
+            <a class="btn" href="../pdfs/content/09-frontend-foundations.pdf">Open PDF</a>
+        </div>
+    </div>
+
+    <aside>
+        <h4>On this page</h4>
+        <ul>
+            <li><a href="#html">HTML</a></li>
+            <li><a href="#css">CSS</a></li>
+            <li><a href="#js">JavaScript</a></li>
+            <li><a href="#render">Render pipeline</a></li>
+            <li><a href="#perf">Performance</a></li>
+            <li><a href="#accessibility">Accessibility</a></li>
+            <li><a href="#frameworks">Frameworks</a></li>
+            <li><a href="#exam">For the exam</a></li>
+        </ul>
+        <h4>Continue</h4>
+        <ul>
+            <li><a href="08-backend.html">← Previous</a></li>
+            <li><a href="10-deployment.html">Next: Deployment →</a></li>
+        </ul>
+    </aside>
+</article>
+
+<footer class="colophon">
+    <div class="container">
+        <span>SDDO course notes · IE University · BCSAI · 2025</span>
+        <span><a href="../index.html">← Back to topics</a></span>
+    </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>07 · Scrum — SDDO Notes</title>
+<meta name="theme-color" content="#2E4374">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/notes.css">
+</head>
+<body>
+
+<header class="masthead">
+    <div class="container masthead-inner">
+        <a class="brand" href="../index.html"><span class="brand-mark">S</span> SDDO Notes <small>· IE BCSAI 2025</small></a>
+        <ul class="menu">
+            <li><a href="../index.html" class="active">Topics</a></li>
+            <li><a href="../readings.html">Readings</a></li>
+            <li><a href="../project.html">Project</a></li>
+            <li><a href="../quiz.html">Quiz &amp; Exam</a></li>
+        </ul>
+    </div>
+</header>
+
+<article class="article container">
+    <div class="body">
+        <span class="num-eyebrow">07 · Foundations</span>
+        <h1>Scrum</h1>
+        <p class="lead">Scrum is a lightweight framework for delivering work in fixed-length
+        iterations, with explicit feedback loops at the start, daily, and end of each iteration.
+        It is a <em>framework</em>, not a methodology — it tells you the events and roles, not
+        how to engineer.</p>
+
+        <h2 id="roles">The three roles</h2>
+        <ul>
+            <li><strong>Product Owner</strong> — owns the backlog. Decides <em>what</em> and in
+                what order. One person, not a committee.</li>
+            <li><strong>Scrum Master</strong> — owns the process. Removes impediments, coaches the
+                team on Scrum. Not a project manager.</li>
+            <li><strong>Developers</strong> — own the <em>how</em>. Self-organising,
+                cross-functional. Three to nine people.</li>
+        </ul>
+
+        <h2 id="events">The five events</h2>
+        <ul>
+            <li><strong>Sprint</strong> — the container. Fixed length (commonly 2 weeks). Goal,
+                scope, and team are stable inside it.</li>
+            <li><strong>Sprint Planning</strong> (start) — the team picks items from the backlog
+                they can complete this sprint. Output: a Sprint Goal and a Sprint Backlog.</li>
+            <li><strong>Daily Scrum / Standup</strong> — 15 min, every day. Three questions: what
+                did I do, what will I do, what's blocking me. Not a status report to the boss —
+                a synchronisation between developers.</li>
+            <li><strong>Sprint Review</strong> (end) — demo the increment to stakeholders. Adjust
+                the backlog based on feedback.</li>
+            <li><strong>Sprint Retrospective</strong> (end) — inspect <em>how</em> the team
+                worked, not <em>what</em> they built. One or two actionable improvements.</li>
+        </ul>
+
+        <h2 id="artifacts">The three artifacts</h2>
+        <ul>
+            <li><strong>Product Backlog</strong> — the ordered list of everything that might be
+                done. Owned by the PO. Lives forever.</li>
+            <li><strong>Sprint Backlog</strong> — what the team committed to this sprint plus the
+                plan to deliver it. Lives for one sprint.</li>
+            <li><strong>Increment</strong> — the working, integrated software produced this
+                sprint. Must meet the Definition of Done.</li>
+        </ul>
+
+        <h2 id="dod">Definition of Done</h2>
+        <p>The agreed checklist that turns "we wrote some code" into "we shipped a feature":</p>
+        <ul>
+            <li>Code reviewed and merged.</li>
+            <li>Tests green; coverage above the floor.</li>
+            <li>Documentation updated.</li>
+            <li>Deployed to staging (or beyond).</li>
+            <li>Acceptance criteria from the story are met.</li>
+        </ul>
+
+        <h2 id="estimation">Estimation</h2>
+        <p>Story points are a relative size, not a duration. A 5 is bigger than a 3 and smaller
+        than an 8 — that's all. Velocity (points completed per sprint) emerges from doing the
+        work; it is a measurement, not a target. Goodhart's law applies: the moment you optimise
+        for velocity, it stops being useful.</p>
+
+        <h2 id="anti-patterns">Common anti-patterns</h2>
+        <ul>
+            <li><strong>Scrumfall</strong> — Waterfall phases inside the sprint (3 days of design,
+                4 of code, 2 of test). Defeats the point.</li>
+            <li><strong>Scrum master as project manager</strong> — chases deadlines and assigns
+                tasks. They should remove impediments, not micromanage.</li>
+            <li><strong>Daily as status meeting</strong> — developers report to the manager.
+                Stops being a synchronisation; becomes theatre.</li>
+            <li><strong>Cargo cult</strong> — running the events without the principles. Holding
+                a retrospective and ignoring its output.</li>
+        </ul>
+
+        <blockquote>
+            Scrum exposes problems. It doesn't solve them. If the team's retros generate the same
+            three complaints sprint after sprint, the framework is working and the team is not
+            listening.
+        </blockquote>
+
+        <h2 id="exam">What to remember at exam time</h2>
+        <ul>
+            <li>3 roles, 5 events, 3 artifacts.</li>
+            <li>Sprint length is fixed and never extended to "fit one more story".</li>
+            <li>The Daily is for developers, not the PO or manager.</li>
+            <li>Definition of Done is set by the team and applies to every item.</li>
+            <li>Story points are relative, not hours.</li>
+        </ul>
+
+        <div class="source-strip">
+            <div>
+                <div class="label">Source · Slides</div>
+                <div class="title">Scrum — main deck · Scrum — slides</div>
+            </div>
+            <a class="btn" href="../pdfs/content/07-scrum.pdf">Open PDF</a>
+        </div>
+    </div>
+
+    <aside>
+        <h4>On this page</h4>
+        <ul>
+            <li><a href="#roles">Roles</a></li>
+            <li><a href="#events">Events</a></li>
+            <li><a href="#artifacts">Artifacts</a></li>
+            <li><a href="#dod">Definition of Done</a></li>
+            <li><a href="#estimation">Estimation</a></li>
+            <li><a href="#anti-patterns">Anti-patterns</a></li>
+            <li><a href="#exam">For the exam</a></li>
+        </ul>
+        <h4>Continue</h4>
+        <ul>
+            <li><a href="06-testing.html">← Previous</a></li>
+            <li><a href="08-backend.html">Next: Backend →</a></li>
+        </ul>
+    </aside>
+</article>
+
+<footer class="colophon">
+    <div class="container">
+        <span>SDDO course notes · IE University · BCSAI · 2025</span>
+        <span><a href="../index.html">← Back to topics</a></span>
+    </div>
+</footer>
+
+</body>
+</html>

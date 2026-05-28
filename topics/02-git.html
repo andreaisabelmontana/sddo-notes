@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>02 · Git Basics — SDDO Notes</title>
+<meta name="theme-color" content="#2E4374">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/notes.css">
+</head>
+<body>
+
+<header class="masthead">
+    <div class="container masthead-inner">
+        <a class="brand" href="../index.html"><span class="brand-mark">S</span> SDDO Notes <small>· IE BCSAI 2025</small></a>
+        <ul class="menu">
+            <li><a href="../index.html" class="active">Topics</a></li>
+            <li><a href="../readings.html">Readings</a></li>
+            <li><a href="../project.html">Project</a></li>
+            <li><a href="../quiz.html">Quiz &amp; Exam</a></li>
+        </ul>
+    </div>
+</header>
+
+<article class="article container">
+    <div class="body">
+        <span class="num-eyebrow">02 · Foundations</span>
+        <h1>Git Basics</h1>
+        <p class="lead">Git is a content-addressable filesystem with a version control interface
+        on top. Understand the three areas (working tree, index, HEAD) and most "weird" Git
+        questions stop being weird.</p>
+
+        <h2 id="mental-model">The mental model</h2>
+        <p>Every commit is a snapshot of the entire working tree, identified by a SHA-1 hash of
+        its content plus its parent. A branch is just a movable pointer to a commit. <code>HEAD</code>
+        is a pointer to the current branch.</p>
+        <p>Files live in three areas:</p>
+        <ul>
+            <li><strong>Working tree</strong> — files on disk you edit.</li>
+            <li><strong>Index / staging</strong> — what will go into the next commit.</li>
+            <li><strong>Repository</strong> — committed history (the <code>.git</code> directory).</li>
+        </ul>
+        <p>Every command moves data between these three areas. <code>git add</code> moves
+        working&nbsp;tree → index. <code>git commit</code> moves index → repo. <code>git checkout</code>
+        moves repo → working tree.</p>
+
+        <h2 id="day-to-day">The day-to-day commands</h2>
+<pre><code>git init                       # start a repo
+git clone &lt;url&gt;                # copy a remote repo
+git status                     # what's modified / staged
+git diff                       # what changed in the working tree
+git diff --staged              # what's about to be committed
+git add &lt;file&gt;                 # stage a change
+git commit -m "feat: …"        # snapshot the index
+git log --oneline --graph      # browse history
+git push / git pull / git fetch
+git branch / git checkout -b &lt;name&gt;
+git merge &lt;branch&gt; / git rebase &lt;branch&gt;</code></pre>
+
+        <h2 id="branching">Branching strategies</h2>
+        <p><strong>Trunk-based development.</strong> Everyone works on short-lived branches
+        (&lt;48h) off <code>main</code>. PRs are small, reviewed fast, merged frequently. This
+        is what high-performing teams in <em>Accelerate</em> measure.</p>
+        <p><strong>GitFlow.</strong> Long-lived <code>develop</code> and <code>main</code> branches
+        with <code>feature/*</code>, <code>release/*</code>, <code>hotfix/*</code>. Heavy. Only
+        justified when you genuinely ship multiple versions in parallel.</p>
+        <p><strong>GitHub Flow.</strong> One long-lived <code>main</code>; every change goes through
+        a PR. The pragmatic middle ground; what most SaaS teams use.</p>
+
+        <h2 id="merge-vs-rebase">Merge vs rebase</h2>
+        <p><code>merge</code> creates a merge commit that joins two histories — the original
+        branch lines are preserved. <code>rebase</code> replays your commits on top of the target
+        branch as if you had branched from its current tip — history is linear but commits are
+        rewritten.</p>
+        <p>Rule of thumb: <strong>rebase locally, merge when published</strong>. Never rebase a
+        branch other people have pulled.</p>
+
+        <h2 id="commits">Commit conventions</h2>
+        <p><strong>Conventional Commits.</strong> Format: <code>type(scope): message</code>. Types:
+        <code>feat</code>, <code>fix</code>, <code>refactor</code>, <code>test</code>,
+        <code>docs</code>, <code>chore</code>, <code>ci</code>, <code>perf</code>. This is enough
+        structure to generate changelogs automatically and to spot at-a-glance what a commit does.</p>
+
+        <blockquote>
+            A commit message that explains <em>why</em> the change exists is worth ten that say
+            <em>what</em> changed — the diff already shows the what.
+        </blockquote>
+
+        <h2 id="exam">What to remember at exam time</h2>
+        <ul>
+            <li>Working tree / index / repo — name the three, name the commands that move between them.</li>
+            <li>A branch is a pointer; HEAD is a pointer to a pointer.</li>
+            <li>Merge preserves history; rebase rewrites it. Which one you use depends on whether
+                the branch is shared.</li>
+            <li>Trunk-based + short PRs is the cited best practice in <em>Accelerate</em>.</li>
+        </ul>
+
+        <div class="source-strip">
+            <div>
+                <div class="label">Source · Slides</div>
+                <div class="title">Git Basics — slides</div>
+            </div>
+            <a class="btn" href="../pdfs/content/02-git-basics.pdf">Open PDF</a>
+        </div>
+    </div>
+
+    <aside>
+        <h4>On this page</h4>
+        <ul>
+            <li><a href="#mental-model">The mental model</a></li>
+            <li><a href="#day-to-day">Day-to-day commands</a></li>
+            <li><a href="#branching">Branching strategies</a></li>
+            <li><a href="#merge-vs-rebase">Merge vs rebase</a></li>
+            <li><a href="#commits">Commit conventions</a></li>
+            <li><a href="#exam">For the exam</a></li>
+        </ul>
+        <h4>Continue</h4>
+        <ul>
+            <li><a href="01-life-cycle.html">← Previous</a></li>
+            <li><a href="03-design-patterns.html">Next: Design Patterns →</a></li>
+        </ul>
+    </aside>
+</article>
+
+<footer class="colophon">
+    <div class="container">
+        <span>SDDO course notes · IE University · BCSAI · 2025</span>
+        <span><a href="../index.html">← Back to topics</a></span>
+    </div>
+</footer>
+
+</body>
+</html>

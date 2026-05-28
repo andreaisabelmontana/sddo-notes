@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>01 · Software Development Life Cycle — SDDO Notes</title>
+<meta name="theme-color" content="#2E4374">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/notes.css">
+</head>
+<body>
+
+<header class="masthead">
+    <div class="container masthead-inner">
+        <a class="brand" href="../index.html">
+            <span class="brand-mark">S</span>
+            SDDO Notes <small>· IE BCSAI 2025</small>
+        </a>
+        <ul class="menu">
+            <li><a href="../index.html" class="active">Topics</a></li>
+            <li><a href="../readings.html">Readings</a></li>
+            <li><a href="../project.html">Project</a></li>
+            <li><a href="../quiz.html">Quiz &amp; Exam</a></li>
+        </ul>
+    </div>
+</header>
+
+<article class="article container">
+    <div class="body">
+        <span class="num-eyebrow">01 · Foundations</span>
+        <h1>Software Development Life Cycle</h1>
+        <p class="lead">A model is just a way of saying "here is the order in which we'll think about
+        the work." Pick the one that matches how often your requirements change and how often you can
+        afford to ship.</p>
+
+        <h2 id="why">Why we model the build process</h2>
+        <p>Software is invisible. Without a shared model of who does what next, work fragments:
+        someone writes code while no one has agreed on the requirements, QA tests features that
+        are about to be redesigned, ops gets handed a deploy at 7&nbsp;pm on a Friday. A lifecycle
+        is a contract about the order of activities — <em>requirements → design → build → test →
+        deploy → operate</em> — and about which of those steps happen <em>once</em> versus
+        <em>continuously</em>.</p>
+
+        <h2 id="models">The classical models</h2>
+        <p><strong>Waterfall</strong> runs each phase to completion before the next begins. It only
+        works when requirements are truly fixed and the cost of late discovery is acceptable.
+        Real-world domains where it fits: regulated medical devices, embedded firmware, hardware
+        co-development.</p>
+
+        <p><strong>V-model</strong> is Waterfall folded in half — each build phase has a matching
+        verification phase. Unit tests verify implementation; integration tests verify design;
+        acceptance tests verify requirements.</p>
+
+        <p><strong>Iterative &amp; Incremental</strong> models break the system into slices and
+        repeat the cycle (requirements → ship) per slice. Each iteration produces working,
+        demonstrable software. Risk drops because problems surface during integration of slice 2,
+        not at the final big-bang test six months in.</p>
+
+        <p><strong>Spiral</strong> wraps iterations in a risk-assessment loop. Each spin asks: what
+        is most likely to kill the project right now? Whatever it is, the next iteration attacks
+        that risk first. Useful for greenfield systems where no two people agree on what
+        "successful" looks like.</p>
+
+        <p><strong>Agile</strong> (XP, Scrum, Kanban) takes iterative to its limit: small slices,
+        short cycles, continuous customer feedback. It assumes requirements <em>will</em> change
+        and structures the work to absorb that.</p>
+
+        <h2 id="choosing">How to choose</h2>
+        <p>The decision turns on two variables: <strong>requirement volatility</strong> (how often
+        will the spec change?) and <strong>release cadence</strong> (how often can we ship?).</p>
+        <ul>
+            <li>Fixed requirements + slow release → Waterfall or V.</li>
+            <li>Fixed requirements + fast release → V with CI.</li>
+            <li>Volatile requirements + slow release → Iterative (every 6–8 weeks).</li>
+            <li>Volatile requirements + fast release → Agile + CD.</li>
+        </ul>
+
+        <blockquote>
+            "Plans are worthless, but planning is everything." A lifecycle is the planning, not the
+            plan. Don't confuse the diagram with the discipline.
+        </blockquote>
+
+        <h2 id="exam">What to remember at exam time</h2>
+        <ul>
+            <li>Name the phases in order: <em>requirements, design, implementation, verification,
+                deployment, maintenance</em>.</li>
+            <li>Be able to draw the V-model and label which test maps to which phase.</li>
+            <li>Justify a choice of model against the two variables above. "Agile because…" is not
+                enough; you need <em>which volatility</em> and <em>which cadence</em>.</li>
+            <li>Don't confuse SDLC (the abstract order of activities) with Scrum (one concrete way
+                of running an iterative SDLC).</li>
+        </ul>
+
+        <div class="source-strip">
+            <div>
+                <div class="label">Source · Slides</div>
+                <div class="title">Life Cycle — slides</div>
+            </div>
+            <a class="btn" href="../pdfs/content/01-life-cycle.pdf">Open PDF</a>
+        </div>
+    </div>
+
+    <aside>
+        <h4>On this page</h4>
+        <ul>
+            <li><a href="#why">Why we model</a></li>
+            <li><a href="#models">The classical models</a></li>
+            <li><a href="#choosing">How to choose</a></li>
+            <li><a href="#exam">For the exam</a></li>
+        </ul>
+        <h4>Continue</h4>
+        <ul>
+            <li><a href="02-git.html">Next: Git Basics →</a></li>
+            <li><a href="../index.html">All topics</a></li>
+        </ul>
+    </aside>
+</article>
+
+<footer class="colophon">
+    <div class="container">
+        <span>SDDO course notes · IE University · BCSAI · 2025</span>
+        <span><a href="../index.html">← Back to topics</a></span>
+    </div>
+</footer>
+
+</body>
+</html>

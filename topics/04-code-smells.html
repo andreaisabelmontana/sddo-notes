@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>04 · Bad Practices & Code Smells — SDDO Notes</title>
+<meta name="theme-color" content="#2E4374">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/notes.css">
+</head>
+<body>
+
+<header class="masthead">
+    <div class="container masthead-inner">
+        <a class="brand" href="../index.html"><span class="brand-mark">S</span> SDDO Notes <small>· IE BCSAI 2025</small></a>
+        <ul class="menu">
+            <li><a href="../index.html" class="active">Topics</a></li>
+            <li><a href="../readings.html">Readings</a></li>
+            <li><a href="../project.html">Project</a></li>
+            <li><a href="../quiz.html">Quiz &amp; Exam</a></li>
+        </ul>
+    </div>
+</header>
+
+<article class="article container">
+    <div class="body">
+        <span class="num-eyebrow">04 · Foundations</span>
+        <h1>Bad Practices &amp; Code Smells</h1>
+        <p class="lead">A smell is a surface symptom that something deeper is wrong. Smells don't
+        prove a bug — they prove a maintainability problem. Refactor when the cost of the next
+        change outweighs the cost of the cleanup.</p>
+
+        <h2 id="catalog">The catalog you should know</h2>
+        <ul>
+            <li><strong>Duplicated Code</strong> — the same logic in two places will drift. Pull
+                it into a function or a parent class.</li>
+            <li><strong>Long Method</strong> — if you need to scroll, the method is doing too much.
+                Extract sub-methods until each one fits on a screen.</li>
+            <li><strong>Long Parameter List</strong> — &gt;3 parameters is a warning, &gt;5 is a
+                rewrite. Group related params into an object.</li>
+            <li><strong>Large Class / God Object</strong> — a class with 30 methods runs the whole
+                domain. Split by responsibility (S in SOLID).</li>
+            <li><strong>Magic Numbers / Strings</strong> — <code>if status == 7</code> tells you
+                nothing. <code>if status == Status.ARCHIVED</code> tells you everything.</li>
+            <li><strong>Primitive Obsession</strong> — passing a <code>string email</code>
+                everywhere; introduce an <code>Email</code> type that validates itself once.</li>
+            <li><strong>Feature Envy</strong> — a method on class A spends its time poking class
+                B's fields. The method belongs on B.</li>
+            <li><strong>Data Clumps</strong> — the same three params travel together (<em>start,
+                end, timezone</em>). They want to be a <code>TimeRange</code> object.</li>
+            <li><strong>Shotgun Surgery</strong> — one change requires edits in ten files. The
+                concept is leaking across modules; consolidate it.</li>
+            <li><strong>Switch Statements on Type</strong> — replace with polymorphism (Strategy
+                or State).</li>
+            <li><strong>Comments explaining what code does</strong> — rename the function and
+                delete the comment. Comments should explain <em>why</em>.</li>
+            <li><strong>Dead Code</strong> — code that no path executes. Git remembers; delete it.</li>
+        </ul>
+
+        <h2 id="solid">SOLID</h2>
+        <p>The principles you refactor <em>towards</em>:</p>
+        <ul>
+            <li><strong>S — Single Responsibility</strong>: a class has exactly one reason to
+                change.</li>
+            <li><strong>O — Open / Closed</strong>: open for extension, closed for modification.
+                Add a new payment provider = add a class, not edit ten.</li>
+            <li><strong>L — Liskov Substitution</strong>: a subclass must honour the contract of
+                its parent. If <code>Square extends Rectangle</code> breaks code that worked with
+                rectangles, the hierarchy is wrong.</li>
+            <li><strong>I — Interface Segregation</strong>: many small interfaces beat one fat
+                interface. Clients shouldn't depend on methods they don't use.</li>
+            <li><strong>D — Dependency Inversion</strong>: depend on abstractions, not
+                concretions. Inject the database, don't import it.</li>
+        </ul>
+
+        <h2 id="when-to-refactor">When (and when not) to refactor</h2>
+        <p>The trigger is <em>friction</em>, not aesthetics. Refactor when:</p>
+        <ul>
+            <li>You're about to add a feature and the existing code makes it hard.</li>
+            <li>A bug fix requires touching the same area for the third time.</li>
+            <li>A new teammate consistently asks "why is this here?"</li>
+        </ul>
+        <p>Don't refactor:</p>
+        <ul>
+            <li>Code you're about to delete.</li>
+            <li>Code you have no tests for. Add tests first.</li>
+            <li>Right before a release.</li>
+        </ul>
+
+        <blockquote>
+            Make the change easy, then make the easy change. — Kent Beck.
+        </blockquote>
+
+        <h2 id="exam">What to remember at exam time</h2>
+        <ul>
+            <li>Recognise the named smells (the dozen above) and pair each with its refactoring.</li>
+            <li>SOLID — each letter, each one-liner.</li>
+            <li>Refactoring needs a green test suite. Always.</li>
+            <li>A smell is a hypothesis, not a verdict. Sometimes the design that smells is
+                actually correct for the constraint.</li>
+        </ul>
+
+        <div class="source-strip">
+            <div>
+                <div class="label">Source · Slides + Reference</div>
+                <div class="title">Bad Practices — slides · Code Smells — reference</div>
+            </div>
+            <span>
+                <a class="btn btn-ghost" href="../pdfs/content/04-bad-practices.pptx">PPTX</a>
+                <a class="btn" href="../pdfs/content/04-code-smells.pdf">PDF</a>
+            </span>
+        </div>
+    </div>
+
+    <aside>
+        <h4>On this page</h4>
+        <ul>
+            <li><a href="#catalog">The catalog</a></li>
+            <li><a href="#solid">SOLID</a></li>
+            <li><a href="#when-to-refactor">When to refactor</a></li>
+            <li><a href="#exam">For the exam</a></li>
+        </ul>
+        <h4>Continue</h4>
+        <ul>
+            <li><a href="03-design-patterns.html">← Previous</a></li>
+            <li><a href="05-architectures.html">Next: Architectures →</a></li>
+        </ul>
+    </aside>
+</article>
+
+<footer class="colophon">
+    <div class="container">
+        <span>SDDO course notes · IE University · BCSAI · 2025</span>
+        <span><a href="../index.html">← Back to topics</a></span>
+    </div>
+</footer>
+
+</body>
+</html>

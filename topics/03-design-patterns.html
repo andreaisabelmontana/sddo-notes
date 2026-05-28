@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>03 · Design Patterns — SDDO Notes</title>
+<meta name="theme-color" content="#2E4374">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/notes.css">
+</head>
+<body>
+
+<header class="masthead">
+    <div class="container masthead-inner">
+        <a class="brand" href="../index.html"><span class="brand-mark">S</span> SDDO Notes <small>· IE BCSAI 2025</small></a>
+        <ul class="menu">
+            <li><a href="../index.html" class="active">Topics</a></li>
+            <li><a href="../readings.html">Readings</a></li>
+            <li><a href="../project.html">Project</a></li>
+            <li><a href="../quiz.html">Quiz &amp; Exam</a></li>
+        </ul>
+    </div>
+</header>
+
+<article class="article container">
+    <div class="body">
+        <span class="num-eyebrow">03 · Foundations</span>
+        <h1>Design Patterns</h1>
+        <p class="lead">A pattern is a named solution to a recurring design problem. Useful as a
+        vocabulary; dangerous as a shopping list. Apply only when the cost of <em>not</em> applying
+        is concrete.</p>
+
+        <h2 id="why">Why patterns exist</h2>
+        <p>Software has shapes that repeat: "I need to create an object whose concrete class is
+        decided at runtime", "I need to apply an operation across a tree", "I need a single shared
+        resource". Naming these shapes lets two engineers say a word and skip thirty minutes of
+        whiteboarding.</p>
+
+        <h2 id="creational">Creational</h2>
+        <ul>
+            <li><strong>Factory Method</strong> — defer instantiation to a method that subclasses
+                override. Use when "the right concrete class" depends on context (DB driver,
+                payment processor).</li>
+            <li><strong>Abstract Factory</strong> — a factory of factories. Used when whole
+                <em>families</em> of related objects vary together (UI toolkit per OS).</li>
+            <li><strong>Builder</strong> — step-by-step construction of complex objects. Useful
+                when the constructor would take twelve parameters.</li>
+            <li><strong>Singleton</strong> — exactly one instance. Often abused; usually a hidden
+                global. Prefer dependency injection.</li>
+            <li><strong>Prototype</strong> — clone an existing object instead of constructing one.</li>
+        </ul>
+
+        <h2 id="structural">Structural</h2>
+        <ul>
+            <li><strong>Adapter</strong> — make an incompatible interface look like the one you
+                expect. The "glue" pattern.</li>
+            <li><strong>Decorator</strong> — add behaviour to an object at runtime without
+                modifying its class. The basis of middleware stacks.</li>
+            <li><strong>Facade</strong> — a simpler interface in front of a complex subsystem.</li>
+            <li><strong>Composite</strong> — treat individual objects and compositions uniformly
+                (tree structures: files/folders, DOM nodes).</li>
+            <li><strong>Proxy</strong> — a stand-in that adds lazy-loading, caching, or access
+                control.</li>
+        </ul>
+
+        <h2 id="behavioural">Behavioural</h2>
+        <ul>
+            <li><strong>Strategy</strong> — interchangeable algorithms behind a common interface.
+                Replaces a chain of <code>if/elif</code>s.</li>
+            <li><strong>Observer</strong> — a subject notifies subscribers when state changes.
+                Foundation of event systems and reactive UIs.</li>
+            <li><strong>Command</strong> — wrap an action as an object so it can be queued, logged,
+                undone.</li>
+            <li><strong>Iterator</strong> — sequential access to a collection without exposing its
+                internals.</li>
+            <li><strong>Template Method</strong> — a skeleton algorithm with overridable steps.</li>
+            <li><strong>State</strong> — change object behaviour by swapping a state object.</li>
+            <li><strong>Chain of Responsibility</strong> — pass a request along a chain until
+                someone handles it (middleware, exception handlers).</li>
+        </ul>
+
+        <h2 id="how-to-apply">How to actually apply them</h2>
+        <p>The wrong question: "where can I apply Decorator?" The right question: "this method has
+        a chain of orthogonal behaviours bolted on with flags — is Decorator the cleanest fix?"
+        Patterns earn their place by removing duplication or coupling. If introducing the pattern
+        adds files without removing duplication, the pattern is the wrong tool.</p>
+
+        <blockquote>
+            Code smells (Topic 4) tell you when a pattern is missing. Patterns tell you what to
+            try. Don't drive from the patterns — drive from the smell.
+        </blockquote>
+
+        <h2 id="exam">What to remember at exam time</h2>
+        <ul>
+            <li>Three families: creational, structural, behavioural. Place each pattern in one.</li>
+            <li>For each, one sentence: <em>"replaces what?"</em> and <em>"common example?"</em>.</li>
+            <li>Singleton is a code smell unless tightly justified.</li>
+            <li>Strategy vs State: same shape, different intent. Strategy = swap algorithm;
+                State = swap behaviour because the object's <em>state</em> changed.</li>
+        </ul>
+
+        <div class="source-strip">
+            <div>
+                <div class="label">Source · Slides</div>
+                <div class="title">Design Patterns — slides</div>
+            </div>
+            <a class="btn" href="../pdfs/content/03-design-patterns.pdf">Open PDF</a>
+        </div>
+    </div>
+
+    <aside>
+        <h4>On this page</h4>
+        <ul>
+            <li><a href="#why">Why patterns exist</a></li>
+            <li><a href="#creational">Creational</a></li>
+            <li><a href="#structural">Structural</a></li>
+            <li><a href="#behavioural">Behavioural</a></li>
+            <li><a href="#how-to-apply">How to apply</a></li>
+            <li><a href="#exam">For the exam</a></li>
+        </ul>
+        <h4>Continue</h4>
+        <ul>
+            <li><a href="02-git.html">← Previous</a></li>
+            <li><a href="04-code-smells.html">Next: Bad Practices →</a></li>
+        </ul>
+    </aside>
+</article>
+
+<footer class="colophon">
+    <div class="container">
+        <span>SDDO course notes · IE University · BCSAI · 2025</span>
+        <span><a href="../index.html">← Back to topics</a></span>
+    </div>
+</footer>
+
+</body>
+</html>

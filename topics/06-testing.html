@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>06 · Testing — SDDO Notes</title>
+<meta name="theme-color" content="#2E4374">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../css/notes.css">
+</head>
+<body>
+
+<header class="masthead">
+    <div class="container masthead-inner">
+        <a class="brand" href="../index.html"><span class="brand-mark">S</span> SDDO Notes <small>· IE BCSAI 2025</small></a>
+        <ul class="menu">
+            <li><a href="../index.html" class="active">Topics</a></li>
+            <li><a href="../readings.html">Readings</a></li>
+            <li><a href="../project.html">Project</a></li>
+            <li><a href="../quiz.html">Quiz &amp; Exam</a></li>
+        </ul>
+    </div>
+</header>
+
+<article class="article container">
+    <div class="body">
+        <span class="num-eyebrow">06 · Foundations</span>
+        <h1>Testing</h1>
+        <p class="lead">Tests are an executable specification. They are not about catching bugs —
+        they're about enabling change. A codebase with bad tests is harder to refactor than one
+        with no tests at all.</p>
+
+        <h2 id="pyramid">The test pyramid</h2>
+        <p>Three layers, in inverse proportion to their cost:</p>
+        <ul>
+            <li><strong>Unit (base)</strong> — a single function/class in isolation. Milliseconds
+                per test. ~70% of the suite.</li>
+            <li><strong>Integration (middle)</strong> — multiple components together: API +
+                database, service + queue. Seconds. ~20%.</li>
+            <li><strong>End-to-end (tip)</strong> — the system as a user touches it. Minutes.
+                ~10%, only for critical happy paths.</li>
+        </ul>
+        <p>Invert the pyramid (lots of slow E2E, few unit) and your suite takes 40 minutes, fails
+        flakily, and gets disabled within a sprint.</p>
+
+        <h2 id="fast">Properties of good tests</h2>
+        <p>FIRST:</p>
+        <ul>
+            <li><strong>F</strong>ast — millisecond range. Slow tests don't get run.</li>
+            <li><strong>I</strong>solated — no shared state between tests.</li>
+            <li><strong>R</strong>epeatable — same result every run, every machine.</li>
+            <li><strong>S</strong>elf-validating — pass or fail; no manual inspection.</li>
+            <li><strong>T</strong>imely — written with (or before) the production code.</li>
+        </ul>
+
+        <h2 id="coverage">Coverage as a floor</h2>
+        <p>Line coverage measures "did this line run during tests?" — not "is this line correct?"
+        A test that calls a function and asserts nothing has 100% coverage and zero value.</p>
+        <p>Treat coverage as a <em>floor</em> (the assignment requires 70%) and combine with:</p>
+        <ul>
+            <li><strong>Mutation testing</strong> — flip operators, see if tests still pass. If
+                they do, your tests don't actually test anything.</li>
+            <li><strong>Branch coverage</strong> — did each <code>if</code> branch execute?</li>
+        </ul>
+
+        <h2 id="microservices">Testing microservices</h2>
+        <p>End-to-end is doubly painful across services: deploy 7 services, seed each, fail at
+        step 5 because of a flaky DNS lookup. Instead:</p>
+        <ul>
+            <li><strong>Contract tests</strong> — service A publishes the contract it expects,
+                service B verifies it produces messages matching that contract. Tools: Pact.</li>
+            <li><strong>Component tests</strong> — test a single service with its dependencies
+                stubbed (testcontainers-style).</li>
+            <li><strong>Reserve E2E</strong> for one or two critical user flows.</li>
+        </ul>
+        <p>See <a href="../pdfs/content/06.3-microservices-testing.pdf">Microservices testing (sub-deck)</a>.</p>
+
+        <h2 id="tdd">TDD as a tool, not a religion</h2>
+        <p>Red → green → refactor. Useful when:</p>
+        <ul>
+            <li>The behaviour is well-defined (algorithms, parsers, business rules).</li>
+            <li>You want the test to drive a clean API design.</li>
+        </ul>
+        <p>Less useful when:</p>
+        <ul>
+            <li>You're exploring an unknown problem (do a spike first, then write tests for what
+                you keep).</li>
+            <li>The "unit" requires elaborate mocking — that's a smell about the design.</li>
+        </ul>
+
+        <blockquote>
+            "Coverage is the seatbelt, not the destination." High coverage is necessary but not
+            sufficient — the question is whether your tests would catch a regression.
+        </blockquote>
+
+        <h2 id="exam">What to remember at exam time</h2>
+        <ul>
+            <li>Pyramid: unit / integration / E2E with rough proportions.</li>
+            <li>FIRST: name each letter.</li>
+            <li>Coverage is necessary, not sufficient. Pair with mutation or branch metrics.</li>
+            <li>Microservices favour contract + component tests over E2E.</li>
+        </ul>
+
+        <div class="source-strip">
+            <div>
+                <div class="label">Source · Slide deck</div>
+                <div class="title">Testing — main deck (+ four supporting decks)</div>
+            </div>
+            <a class="btn" href="../pdfs/content/06-testing.pdf">Open PDF</a>
+        </div>
+    </div>
+
+    <aside>
+        <h4>On this page</h4>
+        <ul>
+            <li><a href="#pyramid">The pyramid</a></li>
+            <li><a href="#fast">Properties of good tests</a></li>
+            <li><a href="#coverage">Coverage as a floor</a></li>
+            <li><a href="#microservices">Microservices testing</a></li>
+            <li><a href="#tdd">TDD</a></li>
+            <li><a href="#exam">For the exam</a></li>
+        </ul>
+        <h4>Sub-decks</h4>
+        <ul>
+            <li><a href="../pdfs/content/06.1-testing-fundamentals-slides.pdf">Fundamentals slides</a></li>
+            <li><a href="../pdfs/content/06.2-testing-microservices-slides.pdf">Microservices slides</a></li>
+            <li><a href="../pdfs/content/06.3-microservices-testing.pdf">Microservices testing</a></li>
+            <li><a href="../pdfs/content/06.4-testing-fundamentals.pdf">Fundamentals reference</a></li>
+        </ul>
+        <h4>Continue</h4>
+        <ul>
+            <li><a href="05-architectures.html">← Previous</a></li>
+            <li><a href="07-scrum.html">Next: Scrum →</a></li>
+        </ul>
+    </aside>
+</article>
+
+<footer class="colophon">
+    <div class="container">
+        <span>SDDO course notes · IE University · BCSAI · 2025</span>
+        <span><a href="../index.html">← Back to topics</a></span>
+    </div>
+</footer>
+
+</body>
+</html>
