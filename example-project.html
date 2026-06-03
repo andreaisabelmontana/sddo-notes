@@ -1,0 +1,850 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Worked Example Project — SDDO Notes</title>
+<meta name="description" content="An end-to-end worked example for Software Development & DevOps: a containerized Flask REST API applying the Strategy pattern, shipped through a GitHub Actions CI/CD pipeline, provisioned with Terraform, observed with health checks and an SLO + error budget, and run as Scrum on a Git-flow branching model.">
+<meta name="theme-color" content="#2E4374">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/notes.css">
+<style>
+/* ----- example-project.html specific layout (built on notes.css tokens) ----- */
+.proj-nav {
+    display: flex; flex-wrap: wrap; gap: 8px 18px;
+    margin-top: 22px; font-family: var(--font-sans); font-size: 0.9rem;
+}
+.proj-nav a { color: var(--ink-muted); border: none; }
+.proj-nav a:hover { color: var(--accent); border-bottom: 1px solid var(--accent); }
+
+/* stage / step heading eyebrow */
+.step-eyebrow {
+    font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--gold); font-weight: 600;
+    display: block; margin: 0 0 4px;
+}
+
+/* code block with a filename label tab */
+.codecard { margin: 22px 0; }
+.codecard .fname {
+    display: inline-block; font-family: var(--font-mono); font-size: 0.72rem;
+    letter-spacing: 0.06em; color: var(--bg); background: var(--accent-dk);
+    padding: 6px 14px; border-radius: var(--radius) var(--radius) 0 0; font-weight: 500;
+}
+.codecard pre { margin: 0; border-radius: 0 var(--radius) var(--radius) var(--radius); }
+.article .body pre code .cmt { color: #8FA6CE; font-style: italic; }
+
+/* stack / outcome pills */
+.pills { display: flex; flex-wrap: wrap; gap: 8px; margin: 10px 0 0; padding: 0; list-style: none; }
+.pills li {
+    background: var(--paper); border: 1px solid var(--rule); border-radius: 999px;
+    padding: 6px 14px; font-family: var(--font-sans); font-size: 0.82rem; color: var(--ink);
+}
+.pills li strong { color: var(--accent); font-family: var(--font-mono); font-size: 0.76rem; }
+
+/* callouts reused from the notes vocabulary */
+.note {
+    background: rgba(46,67,116,0.05); border: 1px solid var(--rule); border-left: 3px solid var(--accent);
+    border-radius: var(--radius); padding: 12px 16px; margin: 16px 0; font-size: 0.96rem;
+}
+.note .label, .why .label {
+    font-family: var(--font-sans); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600; display: block; margin-bottom: 4px;
+}
+.why {
+    background: rgba(184,134,11,0.07); border: 1px solid var(--rule); border-left: 3px solid var(--gold);
+    border-radius: var(--radius); padding: 12px 16px; margin: 16px 0; font-size: 0.96rem; color: var(--ink-muted);
+}
+.why .label { color: var(--gold); }
+.why strong { color: var(--ink); }
+
+/* pipeline stage strip */
+.stages { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; padding: 0; list-style: none; counter-reset: s; }
+.stages li {
+    flex: 1 1 120px; background: var(--paper); border: 1px solid var(--rule);
+    border-top: 3px solid var(--gold); border-radius: var(--radius); padding: 12px 14px;
+    font-family: var(--font-sans); font-size: 0.86rem;
+}
+.stages li b { display: block; font-family: var(--font-serif); font-size: 1.02rem; color: var(--ink); }
+.stages li span { color: var(--ink-muted); font-size: 0.82rem; }
+
+/* mapping / data table */
+.proj-table { width: 100%; border-collapse: collapse; margin: 18px 0; font-family: var(--font-sans); font-size: 0.92rem; }
+.proj-table th, .proj-table td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+.proj-table th { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); font-weight: 600; }
+.proj-table td:first-child { font-family: var(--font-mono); font-size: 0.82rem; color: var(--gold); white-space: nowrap; }
+.proj-table tr:last-child td { border-bottom: none; }
+
+/* error-budget meter */
+.budget { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 14px; margin: 18px 0; }
+.budget .cell {
+    background: var(--paper); border: 1px solid var(--rule); border-left: 3px solid var(--gold);
+    border-radius: var(--radius); padding: 14px 16px;
+}
+.budget .cell .k { font-family: var(--font-sans); font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); font-weight: 600; }
+.budget .cell .v { font-family: var(--font-mono); font-size: 1.3rem; color: var(--accent); margin-top: 3px; }
+
+.repo-tree {
+    background: var(--ink); color: #EDEDED; font-family: var(--font-mono); font-size: 0.82rem;
+    line-height: 1.6; border-radius: var(--radius); padding: 20px 24px; margin: 18px 0; overflow-x: auto;
+}
+.repo-tree .c { color: #8FA6CE; }
+
+.article .body h2 { scroll-margin-top: 90px; }
+@media (max-width: 700px) { .stages li { flex: 1 1 100%; } }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+    <div class="container masthead-inner">
+        <a class="brand" href="index.html"><span class="brand-mark">S</span> SDDO Notes <small>· IE BCSAI 2025</small></a>
+        <ul class="menu">
+            <li><a href="index.html">Topics</a></li>
+            <li><a href="course.html">Course</a></li>
+            <li><a href="readings.html">Readings</a></li>
+            <li><a href="project.html">Project</a></li>
+            <li><a href="example-project.html" class="active">Example project</a></li>
+            <li><a href="quiz.html">Quiz &amp; Exam</a></li>
+            <li><a href="SYLLABUS.pdf">Syllabus ↗</a></li>
+        </ul>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="container">
+        <span class="eyebrow">Worked Example · End-to-end</span>
+        <h1>Ship a containerized web app with a full <em>CI/CD + IaC</em> pipeline.</h1>
+        <p class="lead">
+            One project that exercises the whole course: a small Flask REST API built around a clean
+            design pattern, packaged in a multi-stage Docker image, tested and shipped by a GitHub
+            Actions pipeline, provisioned with Terraform, made observable with health checks, structured
+            logs and an SLO, and run as Scrum on a Git-flow branching model. Every snippet below is real,
+            runnable configuration — read it top to bottom as the story of one feature going to production.
+        </p>
+        <nav class="proj-nav">
+            <a href="#overview">1 · Overview</a>
+            <a href="#app">2 · App &amp; pattern</a>
+            <a href="#container">3 · Containerization</a>
+            <a href="#cicd">4 · CI/CD pipeline</a>
+            <a href="#iac">5 · IaC &amp; deploy</a>
+            <a href="#observability">6 · Observability</a>
+            <a href="#agile">7 · Agile &amp; Git</a>
+            <a href="#outcomes">8 · Learning outcomes</a>
+            <a href="#extensions">9 · Extensions</a>
+            <a href="#references">10 · References</a>
+        </nav>
+        <div class="meta">
+            <span><strong>10</strong> sections</span>
+            <span><strong>6</strong> real config files</span>
+            <span><strong>Sessions 1–35</strong> exercised</span>
+        </div>
+    </div>
+</section>
+
+<article class="article container">
+<div class="body">
+
+<!-- ============================ 1 · OVERVIEW ============================ -->
+<span class="num-eyebrow">01 · The brief</span>
+<h2 id="overview">Overview — goal, sessions exercised, stack</h2>
+<p>The deliverable is a single REST microservice — a <strong>URL-shortener API</strong> — taken
+all the way from a green-field repository to a deployed, observed, and operated service. It is the same
+arc the syllabus draws across the semester: Individual Assignment&nbsp;1 (a minimal app) becomes the substrate
+that Assignment&nbsp;2 and the group project improve with DevOps practices, so nothing is throwaway.</p>
+
+<p>We pick a URL shortener because it is small enough to read in one sitting yet rich enough to
+demonstrate every operational concern: it has state (a key→URL map), an obvious correctness test, a
+natural place to apply a design pattern (the key-generation algorithm), and a clear
+service-level objective (redirects must be fast and available).</p>
+
+<h3>What each part of the course this exercises</h3>
+<ul>
+    <li><strong>Sessions 1–2 (SDLC):</strong> the project moves through requirements → design →
+        build → test → deploy → operate, explicitly.</li>
+    <li><strong>Session 2–3 (Git &amp; tooling):</strong> a Git-flow branching model with pull-request
+        review gates.</li>
+    <li><strong>Sessions 4–6 (Design patterns):</strong> the <em>Strategy</em> pattern for swappable
+        key-generation algorithms.</li>
+    <li><strong>Session 6 (Testing):</strong> a unit + integration test suite with a coverage gate in CI.</li>
+    <li><strong>Session 7 (Scrum):</strong> the work is planned and demoed as a sprint.</li>
+    <li><strong>Session 8 (Backend):</strong> a web/app server, an in-process store, and a health endpoint.</li>
+    <li><strong>Session 10 (Deployment):</strong> the build-once-deploy-many pipeline and container artifact.</li>
+    <li><strong>Session 11 (Security):</strong> non-root container, pinned dependencies, no secrets in the image.</li>
+    <li><strong>IaC objective:</strong> Terraform describes the runtime so the environment is reproducible.</li>
+</ul>
+
+<h3>The stack</h3>
+<ul class="pills">
+    <li><strong>API</strong> Python 3.12 · Flask · Gunicorn</li>
+    <li><strong>Tests</strong> pytest · coverage</li>
+    <li><strong>Lint</strong> ruff</li>
+    <li><strong>Container</strong> Docker (multi-stage)</li>
+    <li><strong>CI/CD</strong> GitHub Actions</li>
+    <li><strong>Registry</strong> GHCR</li>
+    <li><strong>IaC</strong> Terraform</li>
+    <li><strong>Runtime</strong> AWS ECS Fargate + ALB</li>
+    <li><strong>Observe</strong> /healthz · structured logs · Prometheus metrics</li>
+</ul>
+
+<div class="note"><span class="label">Build once, deploy many</span>
+The single Docker image produced by CI is the only artifact that travels between environments.
+Staging and production differ only in <em>configuration</em> (environment variables, the Terraform
+workspace) — never in the artifact. This is the central deployment discipline from Session 10.</div>
+
+<h3>Repository layout</h3>
+<div class="repo-tree"><span class="c"># the shape of the repo this page describes</span>
+urlshort/
+├── app/
+│   ├── __init__.py        <span class="c"># app factory + route wiring</span>
+│   ├── api.py             <span class="c"># REST endpoints</span>
+│   ├── store.py           <span class="c"># in-process key→URL store</span>
+│   ├── keygen.py          <span class="c"># Strategy pattern: key generators</span>
+│   └── observability.py   <span class="c"># /healthz, /metrics, logging</span>
+├── tests/
+│   ├── test_keygen.py     <span class="c"># unit tests (the strategies)</span>
+│   └── test_api.py        <span class="c"># integration tests (the HTTP layer)</span>
+├── infra/
+│   └── main.tf            <span class="c"># Terraform: ECS service + ALB</span>
+├── .github/workflows/
+│   └── ci.yml             <span class="c"># build → test → lint → image → deploy</span>
+├── Dockerfile             <span class="c"># multi-stage build</span>
+├── requirements.txt
+└── README.md</div>
+
+<!-- ============================ 2 · APP & PATTERN ============================ -->
+<span class="num-eyebrow">02 · The application</span>
+<h2 id="app">The app &amp; a design pattern applied</h2>
+<p>The interesting design decision is <em>how short keys are generated</em>. A naïve service hard-codes
+one algorithm; ours treats key generation as a swappable <strong>Strategy</strong> (one of the behavioural
+patterns from <a href="topics/03-design-patterns.html">Topic 03</a>). Each algorithm implements the same
+interface, so the rest of the system depends on a stable contract rather than a concrete implementation —
+and we can switch from random keys to a deterministic counter-based scheme without touching the API layer.</p>
+
+<div class="codecard">
+    <span class="fname">app/keygen.py</span>
+<pre><code><span class="cmt"># Strategy pattern — interchangeable key-generation algorithms</span>
+<span class="cmt"># behind one interface (Sessions 4-6: behavioural design patterns).</span>
+from __future__ import annotations
+import secrets
+import string
+from typing import Protocol
+
+ALPHABET = string.ascii_letters + string.digits
+
+
+class KeyStrategy(Protocol):
+    """The stable contract every algorithm must honour."""
+    def generate(self) -&gt; str: ...
+
+
+class RandomKey:
+    """Cryptographically-random short key. Good default: no coordination needed."""
+    def __init__(self, length: int = 7) -&gt; None:
+        self.length = length
+
+    def generate(self) -&gt; str:
+        return "".join(secrets.choice(ALPHABET) for _ in range(self.length))
+
+
+class CounterKey:
+    """Deterministic base-62 of a monotonic counter. Shortest keys, but needs a source of truth."""
+    def __init__(self, start: int = 1000) -&gt; None:
+        self._n = start
+
+    def generate(self) -&gt; str:
+        n, out = self._n, []
+        self._n += 1
+        if n == 0:
+            return ALPHABET[0]
+        while n &gt; 0:
+            n, r = divmod(n, len(ALPHABET))
+            out.append(ALPHABET[r])
+        return "".join(reversed(out))
+
+
+def get_strategy(name: str) -&gt; KeyStrategy:
+    """Factory: pick the strategy by name (driven by config, not hard-coded)."""
+    strategies = {"random": RandomKey, "counter": CounterKey}
+    if name not in strategies:
+        raise ValueError(f"unknown key strategy: {name!r}")
+    return strategies[name]()</code></pre>
+</div>
+
+<div class="why"><span class="label">Why a pattern here</span>
+The Strategy keeps the varying part — the algorithm — isolated and independently testable. The API never
+knows <strong>which</strong> generator it holds; it only calls <code>.generate()</code>. Adding a third scheme
+(say, a hash of the long URL) is a one-class change that touches no existing call site — the Open/Closed
+principle in action.</div>
+
+<div class="codecard">
+    <span class="fname">app/api.py</span>
+<pre><code><span class="cmt"># The HTTP layer. Depends on the KeyStrategy interface, not a concrete class.</span>
+from flask import Blueprint, request, jsonify, redirect, current_app
+
+api = Blueprint("api", __name__)
+
+
+@api.post("/shorten")
+def shorten():
+    data = request.get_json(silent=True) or {}
+    url = data.get("url")
+    if not url or not url.startswith(("http://", "https://")):
+        return jsonify(error="a valid http(s) url is required"), 400
+
+    store = current_app.config["STORE"]
+    keygen = current_app.config["KEYGEN"]
+
+    <span class="cmt"># retry on the rare key collision (random strategy)</span>
+    for _ in range(5):
+        key = keygen.generate()
+        if store.put_if_absent(key, url):
+            short = f"{request.host_url}{key}"
+            return jsonify(key=key, short_url=short, url=url), 201
+    return jsonify(error="could not allocate a key"), 503
+
+
+@api.get("/&lt;key&gt;")
+def resolve(key: str):
+    url = current_app.config["STORE"].get(key)
+    if url is None:
+        return jsonify(error="not found"), 404
+    return redirect(url, code=302)</code></pre>
+</div>
+
+<div class="codecard">
+    <span class="fname">app/__init__.py</span>
+<pre><code><span class="cmt"># Application factory — wires config, the store, the chosen strategy,</span>
+<span class="cmt"># and the observability endpoints. Config is injected, never hard-coded.</span>
+import os
+from flask import Flask
+from .api import api
+from .store import MemoryStore
+from .keygen import get_strategy
+from .observability import register_observability
+
+
+def create_app() -&gt; Flask:
+    app = Flask(__name__)
+    app.config["STORE"] = MemoryStore()
+    app.config["KEYGEN"] = get_strategy(os.environ.get("KEY_STRATEGY", "random"))
+    app.register_blueprint(api)
+    register_observability(app)
+    return app</code></pre>
+</div>
+
+<p class="muted">The <code>MemoryStore</code> in <code>store.py</code> is a thread-safe dict wrapper with a
+<code>put_if_absent</code> method; swapping it for Redis or Postgres later is, again, a one-class change
+because the API depends only on its small interface (see <a href="topics/05-architectures.html">Topic 05</a>
+on keeping the persistence layer behind a port).</p>
+
+<!-- ============================ 3 · CONTAINERIZATION ============================ -->
+<span class="num-eyebrow">03 · Packaging</span>
+<h2 id="container">Containerization — a multi-stage Dockerfile</h2>
+<p>The image is the unit of deployment. A <strong>multi-stage build</strong> compiles and installs
+dependencies in a fat <em>builder</em> stage, then copies only the resulting virtual environment into a
+slim <em>runtime</em> stage. The shipped image carries no compilers, no build caches, and no shell history —
+smaller attack surface, faster pulls.</p>
+
+<div class="codecard">
+    <span class="fname">Dockerfile</span>
+<pre><code><span class="cmt"># ---------- Stage 1: builder ----------</span>
+FROM python:3.12-slim AS builder
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PIP_NO_CACHE_DIR=1
+
+WORKDIR /build
+COPY requirements.txt .
+<span class="cmt"># build the dependency tree into an isolated venv we can copy wholesale</span>
+RUN python -m venv /opt/venv \
+ &amp;&amp; /opt/venv/bin/pip install --upgrade pip \
+ &amp;&amp; /opt/venv/bin/pip install -r requirements.txt
+
+<span class="cmt"># ---------- Stage 2: runtime ----------</span>
+FROM python:3.12-slim AS runtime
+
+<span class="cmt"># run as an unprivileged user (Session 11: never run containers as root)</span>
+RUN useradd --create-home --uid 10001 appuser
+ENV PATH="/opt/venv/bin:$PATH" \
+    PYTHONUNBUFFERED=1 \
+    KEY_STRATEGY=random \
+    PORT=8080
+
+WORKDIR /app
+COPY --from=builder /opt/venv /opt/venv
+COPY app/ ./app/
+
+USER appuser
+EXPOSE 8080
+
+<span class="cmt"># container-native health check — the orchestrator polls this</span>
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD python -c "import urllib.request,os; \
+      urllib.request.urlopen(f'http://127.0.0.1:{os.environ[\"PORT\"]}/healthz').read()" || exit 1
+
+<span class="cmt"># Gunicorn: a production WSGI server, not Flask's dev server</span>
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "--workers", "2", \
+     "--access-logfile", "-", "app:create_app()"]</code></pre>
+</div>
+
+<div class="why"><span class="label">Notes &amp; trade-offs</span>
+<strong>Pin the base by digest in production</strong> (<code>python:3.12-slim@sha256:…</code>) so a moving tag
+can't silently change your image. <strong>Order layers by change frequency</strong> — copy
+<code>requirements.txt</code> and install <em>before</em> copying app code, so dependency layers stay cached
+when only source changes. <strong>Never <code>COPY . .</code></strong> blindly: a <code>.dockerignore</code>
+keeps <code>.git</code>, tests, and any <code>.env</code> out of the image (Session 11).</div>
+
+<!-- ============================ 4 · CI/CD ============================ -->
+<span class="num-eyebrow">04 · Automation</span>
+<h2 id="cicd">CI/CD pipeline — GitHub Actions, stage by stage</h2>
+<p>The pipeline is the spine of the project: every change runs the same gates, and only a green build on
+<code>main</code> reaches production. This is the <em>build-once-deploy-many</em> and
+<em>continuous delivery</em> discipline from <a href="topics/10-deployment.html">Topic 10</a>.</p>
+
+<ul class="stages">
+    <li><b>Build</b><span>Install deps in a clean runner</span></li>
+    <li><b>Test</b><span>pytest with a coverage gate</span></li>
+    <li><b>Lint</b><span>ruff static checks</span></li>
+    <li><b>Image</b><span>Build &amp; push to GHCR</span></li>
+    <li><b>Deploy</b><span>Terraform apply on main</span></li>
+</ul>
+
+<div class="codecard">
+    <span class="fname">.github/workflows/ci.yml</span>
+<pre><code>name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+  packages: write          <span class="cmt"># push the image to GHCR</span>
+
+env:
+  IMAGE: ghcr.io/${{ github.repository }}
+
+jobs:
+  # ---------- test + lint run on every push and PR ----------
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pytest coverage ruff
+      - name: Lint
+        run: ruff check app tests
+      - name: Test with coverage gate
+        run: |
+          coverage run -m pytest -q
+          coverage report --fail-under=80   <span class="cmt"># fail the build below 80%</span>
+
+  # ---------- build the image; on main, also push it ----------
+  image:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Log in to GHCR
+        if: github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: ${{ github.ref == 'refs/heads/main' }}
+          tags: |
+            ${{ env.IMAGE }}:${{ github.sha }}
+            ${{ env.IMAGE }}:latest
+
+  # ---------- deploy only from main, after a green image ----------
+  deploy:
+    needs: image
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production      <span class="cmt"># gate: require an approval here</span>
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE }}   <span class="cmt"># OIDC, no static keys</span>
+          aws-region: eu-west-1
+      - name: Terraform apply
+        working-directory: infra
+        run: |
+          terraform init
+          terraform apply -auto-approve \
+            -var="image=${{ env.IMAGE }}:${{ github.sha }}"</code></pre>
+</div>
+
+<div class="note"><span class="label">Stage by stage</span>
+<strong>test</strong> runs on every push and PR — lint and a coverage gate that fails the build below 80%
+(Session 6 says coverage is a floor, not a ceiling). <strong>image</strong> needs <code>test</code> to pass,
+builds on every run for parity, but only <em>pushes</em> on <code>main</code>. <strong>deploy</strong> runs
+only from <code>main</code>, behind a GitHub <em>environment</em> that can require a human approval, and uses
+<strong>OIDC role assumption</strong> so no long-lived AWS keys ever live in the repo (Session 11). The image
+tag is the immutable commit SHA — the exact artifact tested is the exact artifact deployed.</div>
+
+<!-- ============================ 5 · IaC ============================ -->
+<span class="num-eyebrow">05 · Infrastructure as code</span>
+<h2 id="iac">IaC &amp; deploy — Terraform</h2>
+<p>The runtime is described declaratively so it is reproducible and reviewable: the same
+<code>terraform apply</code> recreates the whole environment from scratch, and every change to the
+infrastructure goes through a pull request like any other code. Below, an ECS Fargate service sits behind an
+Application Load Balancer; the ALB health check points at the very <code>/healthz</code> endpoint the app exposes.</p>
+
+<div class="codecard">
+    <span class="fname">infra/main.tf</span>
+<pre><code>terraform {
+  required_version = "&gt;= 1.6"
+  required_providers {
+    aws = { source = "hashicorp/aws", version = "~&gt; 5.0" }
+  }
+  <span class="cmt"># remote state so the team shares one source of truth</span>
+  backend "s3" {
+    bucket = "urlshort-tfstate"
+    key    = "prod/terraform.tfstate"
+    region = "eu-west-1"
+  }
+}
+
+provider "aws" {
+  region = "eu-west-1"
+}
+
+variable "image" {
+  description = "Container image tag to deploy (passed by CI)"
+  type        = string
+}
+
+resource "aws_ecs_cluster" "main" {
+  name = "urlshort"
+}
+
+resource "aws_ecs_task_definition" "app" {
+  family                   = "urlshort"
+  requires_compatibilities = ["FARGATE"]
+  network_mode             = "awsvpc"
+  cpu                      = 256
+  memory                   = 512
+  execution_role_arn       = aws_iam_role.exec.arn
+
+  container_definitions = jsonencode([{
+    name      = "urlshort"
+    image     = var.image
+    essential = true
+    portMappings = [{ containerPort = 8080 }]
+    environment  = [{ name = "KEY_STRATEGY", value = "random" }]
+    healthCheck = {
+      command     = ["CMD-SHELL", "python -c \"import urllib.request;urllib.request.urlopen('http://127.0.0.1:8080/healthz')\""]
+      interval    = 30
+      timeout     = 5
+      retries     = 3
+      startPeriod = 10
+    }
+    logConfiguration = {
+      logDriver = "awslogs"
+      options = {
+        "awslogs-group"         = aws_cloudwatch_log_group.app.name
+        "awslogs-region"        = "eu-west-1"
+        "awslogs-stream-prefix" = "urlshort"
+      }
+    }
+  }])
+}
+
+resource "aws_cloudwatch_log_group" "app" {
+  name              = "/ecs/urlshort"
+  retention_in_days = 30
+}
+
+resource "aws_ecs_service" "app" {
+  name            = "urlshort"
+  cluster         = aws_ecs_cluster.main.id
+  task_definition = aws_ecs_task_definition.app.arn
+  desired_count   = 2          <span class="cmt"># two tasks: rolling deploys with no downtime</span>
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    subnets         = var.private_subnets
+    security_groups = [aws_security_group.app.id]
+  }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.app.arn
+    container_name   = "urlshort"
+    container_port   = 8080
+  }
+}
+
+resource "aws_lb_target_group" "app" {
+  name        = "urlshort"
+  port        = 8080
+  protocol    = "HTTP"
+  vpc_id      = var.vpc_id
+  target_type = "ip"
+
+  health_check {
+    path                = "/healthz"   <span class="cmt"># the ALB polls the app's health endpoint</span>
+    healthy_threshold   = 2
+    unhealthy_threshold = 3
+    interval            = 15
+  }
+}</code></pre>
+</div>
+
+<div class="why"><span class="label">IaC notes</span>
+<strong>Remote state</strong> (the S3 backend) lets the whole team share one source of truth and avoids the
+"works on my laptop" infrastructure drift. <strong>Two desired tasks</strong> behind the ALB give a rolling
+deploy: ECS starts new tasks, waits for them to pass the <code>/healthz</code> check, then drains the old ones —
+zero-downtime releases (the deployment strategies from Topic 10). The <code>image</code> variable is the seam
+where CI hands the freshly-built, tested artifact to the infrastructure.</div>
+
+<!-- ============================ 6 · OBSERVABILITY ============================ -->
+<span class="num-eyebrow">06 · Run it well</span>
+<h2 id="observability">Observability &amp; reliability</h2>
+<p>A service you can't see is a service you can't operate. We expose three things — a health check, structured
+logs, and metrics — and then define an explicit <strong>SLO</strong> with an <strong>error budget</strong> so
+"is it healthy enough?" becomes a number, not an argument.</p>
+
+<div class="codecard">
+    <span class="fname">app/observability.py</span>
+<pre><code><span class="cmt"># Health, structured logging, and Prometheus metrics in one place.</span>
+import logging, sys, time, json
+from flask import request, Response
+
+_REQUESTS: dict[tuple[str, int], int] = {}
+_LATENCY_SUM = 0.0
+_LATENCY_COUNT = 0
+
+
+def register_observability(app):
+    _configure_json_logging()
+
+    @app.get("/healthz")
+    def healthz():
+        <span class="cmt"># liveness: cheap, dependency-free, polled by Docker/ECS/ALB</span>
+        return {"status": "ok"}, 200
+
+    @app.before_request
+    def _start_timer():
+        request._t0 = time.perf_counter()
+
+    @app.after_request
+    def _record(resp):
+        global _LATENCY_SUM, _LATENCY_COUNT
+        dt = time.perf_counter() - getattr(request, "_t0", time.perf_counter())
+        key = (request.endpoint or "unknown", resp.status_code)
+        _REQUESTS[key] = _REQUESTS.get(key, 0) + 1
+        _LATENCY_SUM += dt
+        _LATENCY_COUNT += 1
+        app.logger.info(json.dumps({
+            "msg": "request", "path": request.path, "method": request.method,
+            "status": resp.status_code, "duration_ms": round(dt * 1000, 2),
+        }))
+        return resp
+
+    @app.get("/metrics")
+    def metrics():
+        <span class="cmt"># Prometheus text exposition format — scraped on an interval</span>
+        lines = ["# TYPE http_requests_total counter"]
+        for (endpoint, status), n in _REQUESTS.items():
+            lines.append(f'http_requests_total{{endpoint="{endpoint}",status="{status}"}} {n}')
+        avg = (_LATENCY_SUM / _LATENCY_COUNT) if _LATENCY_COUNT else 0.0
+        lines += ["# TYPE http_request_duration_seconds_avg gauge",
+                  f"http_request_duration_seconds_avg {avg:.6f}"]
+        return Response("\n".join(lines) + "\n", mimetype="text/plain")
+
+
+def _configure_json_logging():
+    handler = logging.StreamHandler(sys.stdout)   <span class="cmt"># logs go to stdout; the platform collects them</span>
+    logging.getLogger().addHandler(handler)
+    logging.getLogger().setLevel(logging.INFO)</code></pre>
+</div>
+
+<p><strong>Health vs. readiness.</strong> <code>/healthz</code> answers <em>liveness</em> — "is the process up?"
+— and must stay cheap and dependency-free, or a slow database makes the orchestrator kill a perfectly live
+container. A separate <em>readiness</em> probe (checking dependencies) gates whether traffic is routed in.
+<strong>Logs go to stdout</strong> as one JSON object per line, so the platform (CloudWatch here) collects and
+indexes them — the app never owns log files. <strong>Metrics</strong> are exposed in Prometheus format and
+scraped on an interval, feeding dashboards and alerts.</p>
+
+<h3>An SLO and an error budget</h3>
+<p>The <strong>SLI</strong> (indicator) is the fraction of redirect requests served successfully in under
+200&nbsp;ms. The <strong>SLO</strong> (objective) is the target we promise; the <strong>error budget</strong>
+is the amount of failure that target permits — and it is permission to take risk, not a goal of zero.</p>
+
+<div class="budget">
+    <div class="cell"><div class="k">SLI</div><div class="v">success &lt; 200ms</div></div>
+    <div class="cell"><div class="k">SLO (30 days)</div><div class="v">99.9%</div></div>
+    <div class="cell"><div class="k">Error budget</div><div class="v">0.1%</div></div>
+    <div class="cell"><div class="k">≈ allowed downtime</div><div class="v">43m 12s / mo</div></div>
+</div>
+
+<div class="note"><span class="label">How the budget drives decisions</span>
+A 99.9% monthly SLO permits ~43 minutes of "bad" time per 30 days. While budget remains, the team is free to
+ship fast and take risks; when the budget is <em>spent</em>, the policy flips — feature work pauses and the next
+sprint goes to reliability. The error budget turns the perennial Dev-vs-Ops tension ("ship faster" vs. "stay
+stable") into a shared, quantified rule instead of a fight — the cultural goal of DevOps from Session 1.</div>
+
+<!-- ============================ 7 · AGILE & GIT ============================ -->
+<span class="num-eyebrow">07 · How the team works</span>
+<h2 id="agile">The Agile / Git workflow</h2>
+<p>The work is run as a single <strong>Scrum</strong> sprint (<a href="topics/07-scrum.html">Topic 07</a>) on a
+<strong>Git-flow</strong> branching model (<a href="topics/02-git.html">Topic 02</a>). The two reinforce each
+other: the sprint defines <em>what</em> a unit of value is, and the branching model defines <em>how</em> that
+value safely reaches <code>main</code>.</p>
+
+<table class="proj-table">
+    <thead><tr><th>Scrum element</th><th>How it shows up in this project</th></tr></thead>
+    <tbody>
+        <tr><td>Product backlog</td><td>Issues: "shorten endpoint", "redirect endpoint", "Dockerfile", "CI pipeline", "Terraform service", "health + metrics".</td></tr>
+        <tr><td>Sprint goal</td><td>"A user can shorten a URL and be redirected, served by a deployed, observed container."</td></tr>
+        <tr><td>Sprint backlog</td><td>The subset above committed for this sprint, each issue sized in points.</td></tr>
+        <tr><td>Daily standup</td><td>Async on the PR board: what merged, what's blocked, what's next.</td></tr>
+        <tr><td>Increment</td><td>The green build on <code>main</code> deployed to production — a demonstrable redirect.</td></tr>
+        <tr><td>Sprint review</td><td>Live demo: shorten a URL, follow the redirect, show the Grafana dashboard.</td></tr>
+        <tr><td>Retrospective</td><td>What to keep (coverage gate caught a bug) and improve (flaky integration test).</td></tr>
+    </tbody>
+</table>
+
+<p>Each backlog item becomes a short-lived feature branch off <code>main</code>, opened as a pull request. The
+PR is the quality gate: CI must be green (tests, coverage, lint) and a teammate must approve before merge —
+exactly the review surface from <a href="course.html#program">Session 3</a>.</p>
+
+<div class="codecard">
+    <span class="fname">the loop, per backlog item</span>
+<pre><code><span class="cmt"># branch off main for one issue</span>
+git switch -c feat/shorten-endpoint
+
+<span class="cmt"># conventional commits make the history (and changelog) readable</span>
+git commit -m "feat(api): add POST /shorten with strategy-based keys"
+git commit -m "test(api): cover collision retry path"
+
+<span class="cmt"># publish and open a PR — CI runs test + lint on the PR automatically</span>
+git push -u origin feat/shorten-endpoint
+gh pr create --fill            <span class="cmt"># review + green CI required before merge</span>
+
+<span class="cmt"># after approval + squash-merge, main builds the image and (with approval) deploys</span></code></pre>
+</div>
+
+<!-- ============================ 8 · OUTCOMES ============================ -->
+<span class="num-eyebrow">08 · The syllabus, exercised</span>
+<h2 id="outcomes">Mapping to learning outcomes</h2>
+<p>Read against the course's stated objectives (see <a href="course.html#objectives">Course · Learning objectives</a>),
+this one project touches every one:</p>
+
+<table class="proj-table">
+    <thead><tr><th>Objective</th><th>Where this project demonstrates it</th></tr></thead>
+    <tbody>
+        <tr><td>Holistic vision</td><td>One feature carried end-to-end: design → build → test → ship → operate.</td></tr>
+        <tr><td>Agile methodology</td><td>§7 — Scrum sprint with review and retrospective on a Git-flow model.</td></tr>
+        <tr><td>Architecture &amp; patterns</td><td>§2 — Strategy pattern; store behind a port; stateless container.</td></tr>
+        <tr><td>Testing plan</td><td>§4 — unit + integration suite with an 80% coverage gate in CI.</td></tr>
+        <tr><td>Core DevOps, any vendor</td><td>§4–6 — CI/CD, build-once-deploy-many, monitoring; portable concepts.</td></tr>
+        <tr><td>Management trade-offs</td><td>§6 — the error budget arbitrates ship-fast vs. stay-stable.</td></tr>
+        <tr><td>Infrastructure as Code</td><td>§5 — Terraform for the ECS service, ALB, logging, and state.</td></tr>
+        <tr><td>Continuous improvement</td><td>§7 retro + §6 SLO review feed the next sprint's backlog.</td></tr>
+        <tr><td>Cloud-native computing</td><td>§3,§5 — containerized, orchestrated, declaratively provisioned.</td></tr>
+    </tbody>
+</table>
+
+<!-- ============================ 9 · EXTENSIONS ============================ -->
+<span class="num-eyebrow">09 · Go further</span>
+<h2 id="extensions">Extensions</h2>
+<ul>
+    <li><strong>Persistence:</strong> swap <code>MemoryStore</code> for Redis or Postgres behind the same
+        interface, and add a readiness probe that checks the connection.</li>
+    <li><strong>Blue/green or canary deploys:</strong> route a small traffic slice to the new task set and
+        promote only if its error rate stays inside the budget.</li>
+    <li><strong>Real dashboards &amp; alerts:</strong> wire <code>/metrics</code> into Prometheus + Grafana
+        and alert on burn-rate against the error budget (Assignment 2's brief).</li>
+    <li><strong>Supply-chain security:</strong> add a Trivy image scan and dependency review to the pipeline,
+        and sign the image (Session 11 / DevSecOps).</li>
+    <li><strong>Autoscaling:</strong> add an ECS target-tracking policy on CPU or request count to handle
+        load spikes.</li>
+    <li><strong>Rate limiting:</strong> protect <code>/shorten</code> from abuse with a per-IP limit applied as
+        a Decorator over the route — another behavioural pattern in practice.</li>
+</ul>
+
+<!-- ============================ 10 · REFERENCES ============================ -->
+<span class="num-eyebrow">10 · Where this comes from</span>
+<h2 id="references">References</h2>
+<p>The course notes this project ties together:</p>
+<ul>
+    <li><a href="topics/01-life-cycle.html">01 · Software Development Life Cycle</a> — the phase arc.</li>
+    <li><a href="topics/02-git.html">02 · Git Basics</a> — branching, PRs, the Git-flow model.</li>
+    <li><a href="topics/03-design-patterns.html">03 · Design Patterns</a> — Strategy (and Decorator) applied.</li>
+    <li><a href="topics/05-architectures.html">05 · Software Architectures</a> — ports, statelessness.</li>
+    <li><a href="topics/06-testing.html">06 · Testing</a> — the pyramid and the coverage gate.</li>
+    <li><a href="topics/07-scrum.html">07 · Scrum</a> — roles, events, artifacts.</li>
+    <li><a href="topics/08-backend.html">08 · Backend Components</a> — web/app server, store, health.</li>
+    <li><a href="topics/10-deployment.html">10 · Software Deployment</a> — pipelines, artifacts, strategies.</li>
+    <li><a href="topics/11-security.html">11 · DevOps Security</a> — non-root images, secrets, scanning.</li>
+    <li><a href="course.html#program">Course structure</a> — the full 35-session program.</li>
+    <li><a href="readings.html">Readings</a> — <em>Accelerate</em> and <em>The DevOps Handbook</em> for SLOs,
+        error budgets, and continuous delivery.</li>
+</ul>
+
+<div class="source-strip">
+    <div>
+        <span class="label">Coursework briefs</span>
+        <p class="title">This worked example is the pattern behind Individual Assignments 1 &amp; 2 and the group project.</p>
+    </div>
+    <a class="btn" href="project.html">See the project briefs →</a>
+</div>
+
+</div>
+
+<aside>
+    <h4>On this page</h4>
+    <ul>
+        <li><a href="#overview">1 · Overview</a></li>
+        <li><a href="#app">2 · App &amp; pattern</a></li>
+        <li><a href="#container">3 · Containerization</a></li>
+        <li><a href="#cicd">4 · CI/CD pipeline</a></li>
+        <li><a href="#iac">5 · IaC &amp; deploy</a></li>
+        <li><a href="#observability">6 · Observability</a></li>
+        <li><a href="#agile">7 · Agile &amp; Git</a></li>
+        <li><a href="#outcomes">8 · Learning outcomes</a></li>
+        <li><a href="#extensions">9 · Extensions</a></li>
+        <li><a href="#references">10 · References</a></li>
+    </ul>
+    <h4>Stack</h4>
+    <ul>
+        <li>Flask · Gunicorn</li>
+        <li>Docker · GHCR</li>
+        <li>GitHub Actions</li>
+        <li>Terraform · ECS Fargate</li>
+        <li>Prometheus · CloudWatch</li>
+    </ul>
+</aside>
+
+</article>
+
+<footer class="colophon">
+    <div class="container">
+        <span>SDDO course notes · IE University · BCSAI · 2025</span>
+        <span>Companion to <a href="https://andreaisabelmontana.github.io/topliving-inmobiliaria/">topliving-inmobiliaria</a> (the project)</span>
+    </div>
+</footer>
+
+</body>
+</html>
