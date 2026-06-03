@@ -147,6 +147,41 @@
 .keyidea strong { font-style: normal; font-family: var(--font-sans); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 3px; }
 .readings { font-size: 0.86rem; color: var(--ink-muted); margin: 10px 0 0; font-family: var(--font-sans); }
 .readings .label { font-weight: 600; color: var(--ink); }
+.readings em { color: var(--ink); font-style: italic; }
+
+/* inline command / code snippet inside a session */
+.snip {
+    display: block; background: var(--accent-dk); color: #EAF0FF;
+    font-family: var(--font-mono); font-size: 0.82rem; line-height: 1.6;
+    border-radius: var(--radius); padding: 10px 14px; margin: 12px 0; overflow-x: auto;
+    white-space: pre;
+}
+.snip .c { color: #9DB2D8; } /* comment */
+.snip .label {
+    display: block; font-family: var(--font-sans); font-size: 0.62rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--gold); font-weight: 600; margin-bottom: 6px;
+}
+
+/* pitfall / connects-to note */
+.pitfall {
+    background: rgba(184,134,11,0.07); border: 1px solid var(--rule); border-left: 3px solid var(--gold);
+    border-radius: var(--radius); padding: 11px 16px; margin: 12px 0; font-size: 0.9rem; color: var(--ink-muted);
+}
+.pitfall .label {
+    font-family: var(--font-sans); font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gold); font-weight: 600; display: block; margin-bottom: 3px;
+}
+.pitfall strong { color: var(--ink); }
+
+/* key takeaway badge line */
+.takeaway {
+    display: flex; gap: 10px; align-items: baseline; margin: 12px 0 0;
+    font-size: 0.92rem; color: var(--ink);
+}
+.takeaway .label {
+    font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); font-weight: 600; flex: 0 0 auto;
+}
 
 /* glossary */
 .glossary { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
@@ -260,6 +295,28 @@
             running 700+ rooms across five cities. His background is in large-scale banking systems and data
             engineering — booking platforms, recommendation engines, and process-automation tools — so the
             course leans heavily on real production practice rather than theory in isolation.
+        </div>
+        <div class="toc-callout" style="margin-top:18px">
+            <strong>Prerequisites &amp; how this course connects.</strong> It assumes you can already
+            <em>program</em> — comfort with one object-oriented language, basic data structures, and the
+            command line. It does not assume prior operations, cloud, or networking knowledge; those are
+            built from the ground up in the second half. The course sits downstream of the programming and
+            algorithms courses (which teach you to write code) and upstream of capstone or internship work
+            (which assumes you can <em>ship and operate</em> it). The arc is deliberate: the first half
+            (Sessions 1–17) is software engineering — life cycle, patterns, principles, testing, backend and
+            frontend; the second half (Sessions 18–35) is DevOps — frameworks, delivery, containers, security,
+            and operations — applied to the very app you build in the first half. Individual Assignment 1
+            (a minimal app) becomes the substrate that Assignment 2 and the group project then improve with
+            DevOps practices, so nothing is throwaway.
+        </div>
+        <div class="toc-callout" style="margin-top:18px">
+            <strong>Weekly study load.</strong> 6 ECTS ≈ 150 hours across 35 sessions, so budget roughly
+            <em>4–5 hours per session beyond class</em>: about 1 hour of reading and consolidation, 1–2 hours
+            on exercises or assignment code, and the rest on group work in the second half. The single
+            largest block (45h, 30%) is hands-on exercises and field work, with another 45h of group work —
+            this is a build-heavy course, not a read-heavy one. Front-load the reading in the first weeks
+            (SDLC, patterns, principles) while the labs are light, so you have slack when containers, IaC, and
+            the group sprint stack up after the midterm.
         </div>
     </div>
 </section>
@@ -377,24 +434,37 @@
         <div class="comp-grid">
             <div class="comp-card">
                 <span class="w">30%</span><h4>Final Exam</h4>
-                <p>Double session, ~160 min. Split into a theory part and a practice part — both are individually gated (see pass rule).</p>
+                <p>Double session, ~160 min, covering the whole course. Split into a <strong>theory part</strong> (definitions, trade-offs, "when would you use X" reasoning) and a <strong>practice part</strong> (read/write code, a pipeline or Dockerfile snippet, debug a smelly design) — both are individually gated at 3.5/10 (see pass rule).</p>
+                <p style="color:var(--ink)"><strong>Tip:</strong> revise theory and practice together — the practice part rewards having actually built the assignments, not just read about them.</p>
             </div>
             <div class="comp-card">
                 <span class="w">25%</span><h4>Individual Assignments</h4>
-                <p>Assignment 1: build a minimal app. Assignment 2: improve it with DevOps practices (CI/CD, IaC, containers).</p>
+                <p>Two staged deliverables on one app. <strong>A1:</strong> build a minimal working application (a repo + README, runnable locally). <strong>A2:</strong> improve it with DevOps practices — a CI/CD workflow, a Dockerfile, and modular IaC.</p>
+                <p style="color:var(--ink)"><strong>Graded on:</strong> correctness &amp; completeness, clean structure (principles/patterns applied), git hygiene (clear commits, no secrets), and on-time submission. <strong>Format:</strong> GitHub repository link.</p>
             </div>
             <div class="comp-card">
                 <span class="w">15%</span><h4>Exercises</h4>
-                <p>The in-class and async hands-on work: design-pattern labs, TDD, containers, cloud secret management.</p>
+                <p>The in-class and async hands-on work: design-pattern labs, TDD katas, containers, cloud secret management. Continuously evaluated across the semester.</p>
+                <p style="color:var(--ink)"><strong>Graded on:</strong> completion, evident effort, and participation in forums/blogs. The cheapest marks in the course — they reward simply doing the work on time.</p>
             </div>
             <div class="comp-card">
                 <span class="w">15%</span><h4>Midterm Exam</h4>
-                <p>One session, ~80 min. Tentative date — communicated two weeks ahead; do not book travel around it.</p>
+                <p>One session, ~80 min, covering the first half (SDLC → DevOps frameworks, Sessions 1–15). Tentative date, confirmed two weeks ahead — do not book travel around it.</p>
+                <p style="color:var(--ink)"><strong>Note:</strong> unlike the final, the midterm has no separate pass gate; it folds straight into the weighted average.</p>
             </div>
             <div class="comp-card">
                 <span class="w">15%</span><h4>Group Assignment</h4>
-                <p>Team work to design, develop, and release a software feature end-to-end following DevOps methodology, culminating in a sprint review and retrospective.</p>
+                <p>Team work to design, develop, and release a software feature end-to-end following DevOps methodology, run as Scrum sprints and culminating in a <strong>sprint review</strong> (demo of working software) and a <strong>retrospective</strong> (process reflection).</p>
+                <p style="color:var(--ink)"><strong>Graded on:</strong> the delivered increment, the team's process (sprint artifacts, board hygiene), and the quality of the review and retro exhibitions. <strong>Format:</strong> shared repo + live presentation.</p>
             </div>
+        </div>
+        <div class="toc-callout" style="margin-top:26px">
+            <strong>Continuous-evaluation criteria.</strong> Beyond the five weighted components, the professor
+            tracks four things across the semester: the <em>quality</em> of your contributions in forums and
+            blogs (not just quantity); completion of the required exercises and assignments; whether deliverables
+            land <em>on time</em>; and your individual effort and overall evolution. The practical upshot:
+            steady, visible work beats a last-minute scramble, and late submissions cost you on a dimension the
+            weighting table doesn't show.
         </div>
         <div class="rules">
             <h4>Pass, attendance &amp; re-sit rules</h4>
@@ -438,27 +508,31 @@
                     <h4>Introduction &amp; overview of Software Development and DevOps</h4>
                     <p class="objective">Objective: orient students to the course shape and the discipline, and plant the first definition of DevOps.</p>
                     <ul class="topics-list">
-                        <li><strong>Academic course structure</strong> — how the 35 sessions, assignments, and exams fit together (the map this page draws).</li>
-                        <li><strong>SDLC introduction</strong> — the idea that building software follows describable, repeatable phases rather than ad-hoc effort.</li>
-                        <li><strong>Brief software history</strong> — from early monoliths through client–server and web to cloud computing and the AI era.</li>
-                        <li><strong>DevOps introduction</strong> — the first framing of DevOps as the union of development and operations under shared ownership.</li>
+                        <li><strong>Academic course structure</strong> — how the 35 sessions, assignments, and exams fit together (the map this page draws). The hidden message: the course mirrors the SDLC itself — you plan, build, test, ship, and operate one app across the semester.</li>
+                        <li><strong>SDLC introduction</strong> — the idea that building software follows describable, repeatable phases rather than ad-hoc effort. Naming the phases is what lets a team divide labour, estimate, and know what "done" means at each step.</li>
+                        <li><strong>Brief software history</strong> — from early monoliths and mainframes through client–server and the web to cloud computing and the AI era. Each era shifted the bottleneck (compute → networking → release speed → reliability), and DevOps is the response to the release-speed bottleneck.</li>
+                        <li><strong>DevOps introduction</strong> — the first framing of DevOps as the union of development and operations under shared ownership. Historically these were separate teams with opposed incentives (Dev wanted change, Ops wanted stability); DevOps aligns them around one goal: reliable, frequent delivery.</li>
                     </ul>
                     <div class="concept"><span class="label">Core concept · DevOps</span>A culture and set of practices that merge software <em>development</em> (Dev) and IT <em>operations</em> (Ops) to shorten the delivery cycle and ship reliably and continuously — built on automation, fast feedback, and shared responsibility for what runs in production.</div>
+                    <div class="pitfall"><span class="label">Common pitfall</span>Treating DevOps as a job title or a tool you "install". It is an operating model: hiring a "DevOps engineer" to do all the ops while developers stay hands-off recreates the very wall DevOps exists to remove.</div>
                     <div class="keyidea"><strong>Key idea</strong>DevOps is a culture before it is a toolset. The tools only matter once development and operations stop being separate teams that throw work over a wall.</div>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>The course is one long worked example: a single app, planned in week 1, taken all the way to operated-in-production by week 35.</span></div>
                 </div>
                 <div class="session">
                     <span class="session-num">Session 2 · Live</span>
                     <h4>Software Development Life Cycle (SDLC)</h4>
                     <p class="objective">Objective: study each SDLC phase, compare the models, and assign Individual Assignment 1.</p>
                     <ul class="topics-list">
-                        <li><strong>Each phase of the SDLC</strong> — requirements, design, implementation, testing, deployment, maintenance — and what each produces.</li>
-                        <li><strong>SDLC models</strong> — Waterfall, V-model, iterative, spiral, and Agile, with the trade-offs that make one fit a given project.</li>
-                        <li><strong>Roles &amp; responsibilities</strong> — who owns what across the phases (analyst, architect, developer, QA, ops).</li>
-                        <li><strong>Individual Assignment 1 introduced</strong> — build a minimal application; the seed of the project carried through the course.</li>
+                        <li><strong>Each phase of the SDLC</strong> — requirements, design, implementation, testing, deployment, maintenance — each producing a concrete artifact (a spec, a design doc, code, a test report, a release, a changelog). Knowing the artifact tells you when a phase is genuinely finished.</li>
+                        <li><strong>SDLC models</strong> — Waterfall (sequential, each phase signed off before the next), the V-model (each build phase paired with a test phase), iterative and spiral (repeat with growing scope, spiral adding risk analysis), and Agile (short cycles, continuous re-planning). The deciding factor is the cost and likelihood of change: stable requirements favour predictive models, volatile ones favour adaptive.</li>
+                        <li><strong>Roles &amp; responsibilities</strong> — analyst (requirements), architect (design), developer (build), QA (test), ops (run) — though DevOps deliberately blurs the developer/ops split so one team owns the feature end to end.</li>
+                        <li><strong>Individual Assignment 1 introduced</strong> — build a minimal application; the seed of the project carried through the course and improved with DevOps practices in Assignment 2.</li>
                     </ul>
                     <div class="concept"><span class="label">Core concept · SDLC</span>A structured sequence of phases for producing software. Predictive models (Waterfall, V) plan everything up front; adaptive models (iterative, Agile) embrace change by delivering in cycles and re-planning each time.</div>
+                    <div class="pitfall"><span class="label">Common pitfall</span>Equating Waterfall with "bad" and Agile with "good". Waterfall is the right call when change is genuinely expensive and requirements are fixed (regulated hardware, fixed-price contracts). The skill is matching the model to the change profile, not picking a favourite.</div>
                     <div class="keyidea"><strong>Key idea</strong>You are never choosing whether to have a life cycle — only whether to make it explicit. Picking a model is picking how you handle the cost of change.</div>
-                    <p class="readings"><span class="label">Notes:</span> <a href="topics/01-life-cycle.html">01 · Software Development Life Cycle</a></p>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>Memorise the six phases and the two model families (predictive vs adaptive) — this is reliable midterm material and the spine of the whole course.</span></div>
+                    <p class="readings"><span class="label">Notes:</span> <a href="topics/01-life-cycle.html">01 · Software Development Life Cycle</a> · <span class="label">Read:</span> <em>Essentials of Software Engineering</em>, ch. on process models — focus on the trade-off table comparing Waterfall, iterative, and Agile.</p>
                 </div>
             </div>
         </div>
@@ -480,11 +554,22 @@
                     <h4>Tools overview and setup</h4>
                     <p class="objective">Objective: stand up the working environment every later lab depends on.</p>
                     <ul class="topics-list">
-                        <li><strong>IDEs: VS Code</strong> — the editor, extensions, integrated terminal, and debugger as one workspace.</li>
-                        <li><strong>GitHub</strong> — remote hosting for repositories, pull requests, issues, and Actions; the backbone of the course's CI/CD.</li>
-                        <li><strong>GitHub Copilot</strong> — AI code completion, used as an assistant whose output you still validate.</li>
+                        <li><strong>IDEs: VS Code</strong> — the editor, extensions, integrated terminal, and debugger as one workspace. The integrated debugger (breakpoints, watch, step-through) is worth learning early; it replaces print-statement debugging and saves hours on the assignments.</li>
+                        <li><strong>GitHub</strong> — remote hosting for repositories, pull requests, issues, and Actions; the backbone of the course's CI/CD. A pull request is not just code transport — it is the review and discussion surface where quality gates live.</li>
+                        <li><strong>GitHub Copilot</strong> — AI code completion, used as an assistant whose output you still validate. Per the course AI policy, suggestions are a starting point you must understand and be able to defend, not an answer to paste.</li>
                     </ul>
+                    <div class="concept"><span class="label">Core concept · Version control with Git</span>A distributed system that records every change as a commit, lets parallel work happen on branches, and merges it back. GitHub adds the shared remote, pull requests, and automation. This is the substrate for everything that follows — CI/CD, IaC, and the group project all run through git history.</div>
+                    <div class="snip"><span class="label">First push — the loop you will repeat all semester</span><span class="c"># stage, commit, and publish a change</span>
+git add .
+git commit -m "feat: add health-check endpoint"
+git push origin main
+
+<span class="c"># or via a feature branch + pull request (preferred for the group project)</span>
+git switch -c feat/health-check
+git push -u origin feat/health-check   <span class="c"># then open a PR on GitHub</span></div>
+                    <div class="pitfall"><span class="label">Common pitfall</span>Committing secrets (API keys, <strong>.env</strong> files) or build output. Add a <strong>.gitignore</strong> before your first commit — a secret pushed once is leaked forever, even if you delete it later (Session 28 returns to this).</div>
                     <div class="keyidea"><strong>Key idea</strong>A fluent environment is leverage: time spent making the editor, version control, and assistant work together pays back on every assignment.</div>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>Get the commit → push → PR loop into muscle memory now; the deployment, container, and IaC sessions all assume it.</span></div>
                     <p class="readings"><span class="label">Notes:</span> <a href="topics/02-git.html">02 · Git Basics</a></p>
                 </div>
             </div>
@@ -507,26 +592,35 @@
                     <h4>Creational design patterns</h4>
                     <p class="objective">Objective: control how objects are created, decoupling construction from use.</p>
                     <ul class="topics-list">
-                        <li><strong>Singleton</strong> — guarantees a single shared instance with a global access point (config, connection pools).</li>
-                        <li><strong>Builder</strong> — assembles a complex object step by step, separating construction from representation.</li>
-                        <li><strong>Factory Method</strong> — defers which concrete class to instantiate to a subclass, so callers depend on an interface.</li>
+                        <li><strong>Singleton</strong> — guarantees a single shared instance with a global access point (config, connection pools, loggers). It works by hiding the constructor and exposing one accessor that lazily creates and caches the instance.</li>
+                        <li><strong>Builder</strong> — assembles a complex object step by step, separating construction from representation. Ideal when an object has many optional parameters: a fluent chain reads far better than a constructor with ten arguments.</li>
+                        <li><strong>Factory Method</strong> — defers which concrete class to instantiate to a subclass, so callers depend on an interface and adding a new variant doesn't touch existing call sites (the Open/Closed principle in action).</li>
                         <li><strong>Hands-on exercises</strong> — implement each pattern in code.</li>
                     </ul>
                     <div class="concept"><span class="label">Core concept · Design pattern</span>A named, reusable solution to a problem that recurs in object-oriented design. It is a template for how classes and objects collaborate — not copy-paste code.</div>
+                    <div class="snip"><span class="label">Builder — readable construction over a telescoping constructor</span>Server server = new ServerBuilder()
+    .host("0.0.0.0").port(8080)
+    .tls(true).maxConnections(500)
+    .build();   <span class="c">// vs new Server("0.0.0.0", 8080, true, 500, ...)</span></div>
+                    <div class="pitfall"><span class="label">Common pitfall</span>Singleton as a hiding place for global mutable state. It eases sharing but makes code hard to test (you can't swap it for a fake) and creates hidden coupling. Prefer dependency injection — pass the instance in — and reserve Singleton for genuinely stateless or truly-single resources.</div>
                     <div class="keyidea"><strong>Key idea</strong>Creational patterns answer one question: <em>who decides what gets built, and when?</em> Push that decision behind an interface and the rest of the system stops caring.</div>
-                    <p class="readings"><span class="label">Notes:</span> <a href="topics/03-design-patterns.html">03 · Design Patterns</a></p>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>Be able to name the intent of each pattern in one sentence and recognise it in code — exam questions often show a snippet and ask which pattern it is.</span></div>
+                    <p class="readings"><span class="label">Notes:</span> <a href="topics/03-design-patterns.html">03 · Design Patterns</a> · <span class="label">Read:</span> the Gang-of-Four creational chapter — focus on <em>intent</em> and <em>when not to use</em>, not the UML.</p>
                 </div>
                 <div class="session">
                     <span class="session-num">Session 5 · Live</span>
                     <h4>Structural design patterns</h4>
                     <p class="objective">Objective: compose objects and classes into larger structures while keeping them flexible.</p>
                     <ul class="topics-list">
-                        <li><strong>Adapter</strong> — wraps an incompatible interface so two classes that weren't designed together can collaborate.</li>
-                        <li><strong>Proxy</strong> — a stand-in that controls access to another object (lazy loading, caching, access control).</li>
-                        <li><strong>Facade</strong> — a single simplified interface over a complex subsystem.</li>
+                        <li><strong>Adapter</strong> — wraps an incompatible interface so two classes that weren't designed together can collaborate; the classic use is fitting a third-party library to your own interface so you can swap it later.</li>
+                        <li><strong>Proxy</strong> — a stand-in that controls access to another object, implementing the same interface so callers can't tell the difference (lazy loading, caching, access control, remote calls).</li>
+                        <li><strong>Facade</strong> — a single simplified interface over a complex subsystem, reducing the surface area clients must learn and decoupling them from internal churn.</li>
                         <li><strong>Hands-on exercises</strong> — wire the patterns into a small design.</li>
                     </ul>
+                    <div class="concept"><span class="label">Core concept · Composition over inheritance</span>Structural patterns mostly work by <em>wrapping</em> objects (composition) rather than extending classes (inheritance). Composition keeps coupling loose and behaviour swappable at runtime, where deep inheritance hierarchies become rigid and brittle.</div>
+                    <div class="pitfall"><span class="label">Common pitfall</span>Confusing Adapter, Proxy, and Decorator — all wrap an object. The tell is <em>intent</em>: Adapter <strong>changes</strong> the interface, Proxy <strong>guards</strong> the same interface, Decorator <strong>adds behaviour</strong> to the same interface.</div>
                     <div class="keyidea"><strong>Key idea</strong>Structural patterns are about fit: they let you change how parts connect without rewriting the parts themselves.</div>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>When integrating any external library, put an Adapter or Facade in front of it — your code then depends on your interface, and replacing the vendor is a one-class change.</span></div>
                     <p class="readings"><span class="label">Notes:</span> <a href="topics/03-design-patterns.html">03 · Design Patterns</a></p>
                 </div>
                 <div class="session">
@@ -534,12 +628,20 @@
                     <h4>Behavioural design patterns</h4>
                     <p class="objective">Objective: manage how objects communicate and divide responsibility at runtime.</p>
                     <ul class="topics-list">
-                        <li><strong>Observer</strong> — a subject notifies its dependents automatically when its state changes (the basis of event systems).</li>
-                        <li><strong>Strategy</strong> — encapsulates interchangeable algorithms behind a common interface, swappable at runtime.</li>
-                        <li><strong>Command</strong> — turns a request into an object, enabling queuing, logging, and undo.</li>
+                        <li><strong>Observer</strong> — a subject notifies its dependents automatically when its state changes; the basis of event systems, UI bindings, and pub/sub. Subscribers register a callback and are decoupled from the publisher.</li>
+                        <li><strong>Strategy</strong> — encapsulates interchangeable algorithms behind a common interface, swappable at runtime; it replaces a sprawling if/else or switch over "modes" with a set of small, testable classes.</li>
+                        <li><strong>Command</strong> — turns a request into an object carrying its parameters, enabling queuing, logging, retry, and undo — the request becomes data you can store and replay.</li>
                         <li><strong>Hands-on exercises</strong> — implement the interaction patterns.</li>
                     </ul>
+                    <div class="concept"><span class="label">Core concept · Behavioural patterns</span>They govern <em>how objects communicate and divide responsibility at runtime</em>. The common move is to extract the varying behaviour into its own object (a strategy, a command, an observer) so the rest of the system depends on a stable interface rather than a concrete algorithm.</div>
+                    <div class="snip"><span class="label">Strategy — swap an algorithm without touching the caller</span><span class="c"># each strategy implements the same interface</span>
+sorter = Sorter(strategy=QuickSort())
+sorter.run(data)
+sorter.strategy = MergeSort()   <span class="c"># behaviour changes, caller doesn't</span>
+sorter.run(data)</div>
+                    <div class="pitfall"><span class="label">Common pitfall</span>Reaching for Observer and ending up with untraceable "spooky action at a distance" — a state change fires a cascade of listeners you can't follow in a stack trace. Keep the event graph small and name your events clearly.</div>
                     <div class="keyidea"><strong>Key idea</strong>Behavioural patterns trade compile-time wiring for runtime flexibility — favour composition and interfaces over hard-coded control flow.</div>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>A big switch statement on a "type" field is almost always a Strategy or State pattern waiting to be extracted.</span></div>
                     <p class="readings"><span class="label">Notes:</span> <a href="topics/03-design-patterns.html">03 · Design Patterns</a></p>
                 </div>
             </div>
@@ -562,24 +664,28 @@
                     <h4>Software development general principles &amp; typical bad practices</h4>
                     <p class="objective">Objective: build a shared vocabulary for what makes code good and what makes it rot.</p>
                     <ul class="topics-list">
-                        <li><strong>SOLID principles</strong> — Single responsibility, Open/closed, Liskov substitution, Interface segregation, Dependency inversion: five rules for object-oriented design that resists change badly.</li>
-                        <li><strong>DRY, KISS &amp; other informal principles</strong> — Don't Repeat Yourself; Keep It Simple — heuristics over hard rules.</li>
-                        <li><strong>Code smells</strong> — surface symptoms (long methods, duplication, magic numbers, god objects) that hint at deeper design problems.</li>
+                        <li><strong>SOLID principles</strong> — <strong>S</strong>ingle responsibility (one reason to change), <strong>O</strong>pen/closed (extend without modifying), <strong>L</strong>iskov substitution (subtypes honour their base type's contract), <strong>I</strong>nterface segregation (many small interfaces beat one fat one), <strong>D</strong>ependency inversion (depend on abstractions, not concretions). Together they keep OO systems easy to extend and hard to break.</li>
+                        <li><strong>DRY, KISS &amp; other informal principles</strong> — Don't Repeat Yourself (one authoritative source for each piece of knowledge); Keep It Simple (the simplest thing that works); plus YAGNI (don't build what you don't yet need). Heuristics, not laws — DRY taken too far creates the wrong abstraction.</li>
+                        <li><strong>Code smells</strong> — surface symptoms that hint at deeper design problems: long methods, duplicated code, magic numbers, god objects, long parameter lists, feature envy. Each maps to a known refactoring.</li>
                     </ul>
                     <div class="concept"><span class="label">Core concept · SOLID</span>Five design principles that, applied together, keep object-oriented systems easy to extend and hard to break: each class has one reason to change, is open to extension but closed to modification, and depends on abstractions rather than concretions.</div>
+                    <div class="pitfall"><span class="label">Common pitfall</span>Over-applying the principles — splitting every class into single-method fragments or hiding everything behind interfaces "for SOLID's sake". This is its own smell (needless complexity). Principles serve readability and change; if a "fix" makes the code harder to follow, it isn't one.</div>
                     <div class="keyidea"><strong>Key idea</strong>A code smell isn't a bug — it's a warning. The fix is almost always a refactor that restores a violated principle, not a patch.</div>
-                    <p class="readings"><span class="label">Notes:</span> <a href="topics/04-code-smells.html">04 · Bad Practices &amp; Code Smells</a></p>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>Be able to name the SOLID letters <em>and</em> give a one-line smell + refactoring for each — this pairs directly with the patterns from Sessions 4–6.</span></div>
+                    <p class="readings"><span class="label">Notes:</span> <a href="topics/04-code-smells.html">04 · Bad Practices &amp; Code Smells</a> · <span class="label">Read:</span> <em>Essentials of Software Engineering</em> on design quality — focus on the link between a smell and the principle it violates.</p>
                 </div>
                 <div class="session">
                     <span class="session-num">Session 8 · Live</span>
                     <h4>Consolidation: principles, patterns &amp; bad practices</h4>
                     <p class="objective">Objective: bring tools, the three pattern families, and the principles/bad-practices material together into one working picture.</p>
                     <ul class="topics-list">
-                        <li><strong>Tools overview &amp; setup recap</strong> — the environment from Module 2, now in service of pattern-driven code.</li>
-                        <li><strong>Creational, structural &amp; behavioural patterns</strong> — reviewed as one coherent catalogue.</li>
-                        <li><strong>General principles &amp; bad practices</strong> — applying SOLID/DRY/KISS to clean up smelly code.</li>
+                        <li><strong>Tools overview &amp; setup recap</strong> — the environment from Module 2, now in service of pattern-driven code and the refactoring you'll do here.</li>
+                        <li><strong>Creational, structural &amp; behavioural patterns</strong> — reviewed as one coherent catalogue, grouped by the question each family answers (who builds it / how it fits / how it talks).</li>
+                        <li><strong>General principles &amp; bad practices</strong> — applying SOLID/DRY/KISS to clean up smelly code, choosing the pattern that restores the violated principle.</li>
                     </ul>
+                    <div class="pitfall"><span class="label">Connects to</span>This session is the bridge to the midterm: it ties the patterns (Sessions 4–6) to the principles (Session 7) and to the SDLC's design phase (Session 2). A good revision exercise is to take a smelly snippet, name the smell, name the violated principle, and name the pattern that fixes it.</div>
                     <div class="keyidea"><strong>Key idea</strong>Patterns and principles aren't separate topics — patterns are how you <em>express</em> the principles in structure.</div>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>Use this consolidation to build a one-page cheat sheet (pattern → intent, principle → smell → fix); it doubles as midterm revision.</span></div>
                     <p class="readings"><span class="label">Notes:</span> <a href="topics/03-design-patterns.html">03 · Design Patterns</a> · <a href="topics/04-code-smells.html">04 · Code Smells</a></p>
                 </div>
             </div>
@@ -602,12 +708,18 @@
                     <h4>Software backend architectures</h4>
                     <p class="objective">Objective: understand how backend systems are structured and exposed.</p>
                     <ul class="topics-list">
-                        <li><strong>Architectures</strong> — monolith, layered/N-tier, and service-oriented styles, and the forces that pull a design toward each.</li>
-                        <li><strong>APIs</strong> — the contracts (typically REST over HTTP) through which clients and services talk.</li>
-                        <li><strong>Microservices</strong> — decomposing a system into small, independently deployable services owning their own data.</li>
+                        <li><strong>Architectures</strong> — monolith (one deployable, simplest to start), layered/N-tier (presentation → business → data, the default for most apps), and service-oriented / microservices (many deployables). The forces: team size, scaling needs, and how independently parts must change.</li>
+                        <li><strong>APIs</strong> — the contracts through which clients and services talk, typically REST over HTTP: resources addressed by URL, acted on with verbs (GET/POST/PUT/DELETE), exchanging JSON, with status codes signalling the outcome.</li>
+                        <li><strong>Microservices</strong> — decomposing a system into small, independently deployable services that each own their data and communicate over the network. Powerful but costly: you trade in-process method calls for network calls, distributed transactions, and far more moving parts to operate.</li>
                     </ul>
                     <div class="concept"><span class="label">Core concept · Microservices</span>An architecture in which an application is a suite of small services, each running in its own process, communicating over lightweight APIs, and independently deployable. The trade is operational complexity for independent scaling and deployment.</div>
+                    <div class="snip"><span class="label">A REST contract reads as resource + verb + status</span>GET    /api/rooms          <span class="c">→ 200  list rooms</span>
+POST   /api/rooms          <span class="c">→ 201  create a room (body: JSON)</span>
+GET    /api/rooms/42       <span class="c">→ 200  one room  /  404 if absent</span>
+DELETE /api/rooms/42       <span class="c">→ 204  no content</span></div>
+                    <div class="pitfall"><span class="label">Common pitfall</span>Splitting into microservices too early ("distributed monolith"): services so chatty and co-dependent that you get all the network pain and none of the independence. Start as a well-layered monolith with clear module boundaries; extract a service only when one part genuinely needs to scale or deploy on its own.</div>
                     <div class="keyidea"><strong>Key idea</strong>Microservices are an organisational choice as much as a technical one — don't reach for them until a monolith's coupling is actually slowing you down.</div>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>Know the three architecture styles and one honest pro/con for each; "monolith-first" is the defensible default answer in an exam.</span></div>
                     <p class="readings"><span class="label">Notes:</span> <a href="topics/05-architectures.html">05 · Software Architectures</a> · <a href="topics/08-backend.html">08 · Backend Components</a></p>
                 </div>
                 <div class="session">
@@ -615,12 +727,18 @@
                     <h4>Software backend development</h4>
                     <p class="objective">Objective: get hands-on with the libraries that implement a backend.</p>
                     <ul class="topics-list">
-                        <li><strong>HTTP frameworks</strong> — routing requests to handlers, middleware, and request/response handling.</li>
-                        <li><strong>ORM libraries</strong> — Object-Relational Mapping: working with the database through objects instead of raw SQL.</li>
-                        <li><strong>Other tools</strong> — supporting libraries for validation, configuration, and serialization.</li>
+                        <li><strong>HTTP frameworks</strong> — routing requests to handler functions, middleware (auth, logging, CORS) that runs around them, and request/response handling. A framework like Flask, FastAPI, or Express turns "a function" into "an endpoint" with a decorator or route registration.</li>
+                        <li><strong>ORM libraries</strong> — Object-Relational Mapping: working with the database through objects (a <code>Room</code> class ↔ a <code>rooms</code> table) instead of raw SQL, with migrations to version the schema.</li>
+                        <li><strong>Other tools</strong> — supporting libraries for validation (rejecting bad input at the edge), configuration (env-driven settings), and serialization (object ↔ JSON).</li>
                     </ul>
                     <div class="concept"><span class="label">Core concept · ORM</span>A layer that maps database tables to objects in code, so persistence reads as method calls on domain objects rather than hand-written SQL — at the cost of some control over the generated queries.</div>
+                    <div class="snip"><span class="label">A route + an ORM query (FastAPI-style)</span>@app.get("/rooms/{id}")
+def get_room(id: int):
+    return db.query(Room).filter(Room.id == id).first()
+    <span class="c"># ORM builds: SELECT * FROM rooms WHERE id = ? LIMIT 1</span></div>
+                    <div class="pitfall"><span class="label">Common pitfall</span>The N+1 query problem: looping over results and lazily loading a relation each iteration fires one query per row. Watch the SQL the ORM emits and use eager loading / joins — the convenience hides real database cost.</div>
                     <div class="keyidea"><strong>Key idea</strong>Frameworks and ORMs trade some control for a great deal of speed; know what they generate so the abstraction never becomes a black box.</div>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>This is the session your Assignment 1 app leans on most — a few routes backed by an ORM model is the whole minimal backend.</span></div>
                     <p class="readings"><span class="label">Notes:</span> <a href="topics/08-backend.html">08 · Backend Components</a></p>
                 </div>
             </div>
@@ -643,15 +761,25 @@
                     <h4>Software quality &amp; testing</h4>
                     <p class="objective">Objective: build a complete testing plan and practise writing tests first.</p>
                     <ul class="topics-list">
-                        <li><strong>Unit testing</strong> — isolating the smallest pieces (functions, methods) to verify them independently.</li>
-                        <li><strong>Integration testing</strong> — checking that components work together across their boundaries.</li>
-                        <li><strong>Regression testing</strong> — re-running tests to confirm new changes haven't broken existing behaviour.</li>
-                        <li><strong>Performance testing</strong> — measuring latency and throughput under load.</li>
-                        <li><strong>Acceptance testing</strong> — confirming the software meets the agreed business criteria.</li>
+                        <li><strong>Unit testing</strong> — isolating the smallest pieces (functions, methods) and verifying them independently, mocking out collaborators. Fast and numerous; they pinpoint exactly what broke.</li>
+                        <li><strong>Integration testing</strong> — checking that components work together across their boundaries (code + real database, service + service). Slower but catches the wiring bugs units miss.</li>
+                        <li><strong>Regression testing</strong> — re-running the existing suite to confirm new changes haven't broken old behaviour; this is what makes a CI pipeline worth having.</li>
+                        <li><strong>Performance testing</strong> — measuring latency and throughput under load to find where the system degrades before users do.</li>
+                        <li><strong>Acceptance testing</strong> — confirming the software meets the agreed business criteria, ideally expressed as scenarios the stakeholder recognises.</li>
                         <li><strong>Hands-on TDD</strong> — write a failing test, make it pass, refactor — repeat.</li>
                     </ul>
                     <div class="concept"><span class="label">Core concept · Test-Driven Development</span>A workflow where you write a failing test before the code that satisfies it, then refactor — the red/green/refactor loop. Tests become the executable specification and a safety net for change.</div>
+                    <div class="snip"><span class="label">Red → green: write the failing test first</span><span class="c"># 1. RED — write the test, watch it fail</span>
+def test_total_includes_tax():
+    assert price_with_tax(100, 0.21) == 121
+
+<span class="c"># 2. GREEN — simplest code that passes</span>
+def price_with_tax(net, rate):
+    return net * (1 + rate)
+<span class="c"># 3. REFACTOR — clean up with the test as a safety net</span></div>
+                    <div class="pitfall"><span class="label">Common pitfall</span>Chasing a coverage number. 100% coverage of trivial getters proves nothing, while a high figure can hide untested edge cases. Test behaviour and boundaries, not lines — and beware brittle tests coupled to implementation detail that break on every refactor.</div>
                     <div class="keyidea"><strong>Key idea</strong>The test pyramid: many fast unit tests at the base, fewer integration tests above, a thin layer of slow end-to-end tests on top. Coverage is a floor, not a ceiling.</div>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>The five test levels and the pyramid are exam staples; in practice, the unit tests you write here become the gate your CI pipeline (Session 13) enforces.</span></div>
                     <p class="readings"><span class="label">Notes:</span> <a href="topics/06-testing.html">06 · Testing</a></p>
                 </div>
             </div>
@@ -674,12 +802,14 @@
                     <h4>Frontend development</h4>
                     <p class="objective">Objective: understand how the client side renders and how to build it.</p>
                     <ul class="topics-list">
-                        <li><strong>SPA vs SSR architectures</strong> — Single-Page Apps render in the browser after loading once; Server-Side Rendering ships ready-made HTML, trading interactivity patterns for first-paint speed and SEO.</li>
-                        <li><strong>HTML, JS &amp; CSS basics</strong> — structure, behaviour, and presentation — the three concerns of every web page.</li>
-                        <li><strong>Browser dev tools</strong> — inspecting the DOM, debugging JavaScript, and profiling network and performance.</li>
+                        <li><strong>SPA vs SSR architectures</strong> — Single-Page Apps load one shell then render in the browser via JavaScript (rich interactivity, slower first paint, harder SEO); Server-Side Rendering ships ready-made HTML per request (fast first paint, SEO-friendly, more server work). Modern frameworks (Next, Nuxt) blend both — render on the server, then "hydrate" in the browser.</li>
+                        <li><strong>HTML, JS &amp; CSS basics</strong> — the three separated concerns of every page: HTML is structure (the DOM), CSS is presentation, JavaScript is behaviour. Keeping them separate is the frontend version of single responsibility.</li>
+                        <li><strong>Browser dev tools</strong> — Elements (inspect/edit the live DOM and CSS), Console (run JS, read errors), Network (see every request, timing, payload), and Performance (profile jank). The same tools you'd use to debug this very page.</li>
                     </ul>
                     <div class="concept"><span class="label">Core concept · SPA vs SSR</span>SPA loads a single HTML shell and builds pages with JavaScript client-side; SSR builds the HTML on the server per request. The choice trades initial load and SEO against client-side richness — modern frameworks often blend both.</div>
+                    <div class="pitfall"><span class="label">Connects to</span>These notes themselves are static server-rendered HTML with a small scoped <code>&lt;style&gt;</code> — the simplest end of the spectrum, and a deliberate contrast to a JavaScript-heavy SPA. Open the Network tab on this page to see how little it ships.</div>
                     <div class="keyidea"><strong>Key idea</strong>The browser is a constrained runtime; the rendering choice (SPA vs SSR) is the single biggest lever on perceived performance.</div>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>Be able to argue SPA vs SSR from the requirements (SEO? offline? how interactive?) rather than from fashion — that reasoning is the examinable skill.</span></div>
                     <p class="readings"><span class="label">Notes:</span> <a href="topics/09-frontend.html">09 · Frontend Foundations</a></p>
                 </div>
             </div>
@@ -702,24 +832,44 @@
                     <h4>Software deployment (I)</h4>
                     <p class="objective">Objective: automate the path from commit to deployed app.</p>
                     <ul class="topics-list">
-                        <li><strong>Deployment automation with GitHub Actions</strong> — workflows triggered by events (push, PR) that build, test, and deploy automatically.</li>
-                        <li><strong>Assignment app deployment overview</strong> — applying the pipeline to the course's own application.</li>
+                        <li><strong>Deployment automation with GitHub Actions</strong> — YAML workflows in <code>.github/workflows/</code> triggered by events (push, PR) that run jobs of steps on a runner: check out code, install, test, build, deploy. This is the CI pipeline from the testing session, made real.</li>
+                        <li><strong>Assignment app deployment overview</strong> — applying the pipeline to the course's own application: every push runs the tests and, if green, deploys — exactly the loop Assignment 2 is graded on.</li>
                     </ul>
                     <div class="concept"><span class="label">Core concept · CI/CD pipeline</span>Continuous Integration merges and automatically tests every change frequently; Continuous Delivery/Deployment keeps the result always shippable and pushes it through automated stages. The pipeline is the automated assembly line from commit to production.</div>
+                    <div class="snip"><span class="label">A minimal GitHub Actions workflow</span><span class="c"># .github/workflows/ci.yml</span>
+on: [push]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install -r requirements.txt
+      - run: pytest        <span class="c"># red build blocks the merge</span></div>
+                    <div class="pitfall"><span class="label">Common pitfall</span>A pipeline that builds but never fails — tests that don't run, or a step that swallows errors. A green check must <em>mean</em> "safe to ship"; a pipeline you don't trust is worse than none, because it gives false confidence.</div>
                     <div class="keyidea"><strong>Key idea</strong>If deployment is a scripted pipeline rather than a manual ritual, releasing stops being an event and becomes routine.</div>
-                    <p class="readings"><span class="label">Notes:</span> <a href="topics/10-deployment.html">10 · Software Deployment</a></p>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>Being able to write a basic <code>ci.yml</code> from memory is a likely practice-exam task and the core of Assignment 2.</span></div>
+                    <p class="readings"><span class="label">Notes:</span> <a href="topics/10-deployment.html">10 · Software Deployment</a> · <span class="label">Read:</span> <em>The DevOps Handbook</em> on continuous integration — focus on the "keep main always deployable" principle.</p>
                 </div>
                 <div class="session">
                     <span class="session-num">Session 14 · Live</span>
                     <h4>Software deployment (II)</h4>
                     <p class="objective">Objective: choose deployment strategies and treat infrastructure as code.</p>
                     <ul class="topics-list">
-                        <li><strong>Software deployment process</strong> — building artifacts, promoting through environments, and rollback.</li>
-                        <li><strong>Deployment strategies</strong> — blue-green, canary, and rolling releases that reduce the risk of any single change.</li>
-                        <li><strong>Infrastructure as Code</strong> — defining servers, networks, and services in version-controlled declarative files.</li>
+                        <li><strong>Software deployment process</strong> — building a versioned artifact once, then promoting that same artifact through environments (dev → staging → prod), with a defined rollback path if it misbehaves.</li>
+                        <li><strong>Deployment strategies</strong> — <strong>blue-green</strong> (two identical environments, switch traffic instantly, roll back by switching back), <strong>canary</strong> (release to a small % first, watch metrics, then widen), <strong>rolling</strong> (replace instances batch by batch). Each limits the blast radius of a bad change differently.</li>
+                        <li><strong>Infrastructure as Code</strong> — defining servers, networks, and services in version-controlled declarative files (e.g. Terraform), so an environment is created by running code, not by clicking in a console.</li>
                     </ul>
                     <div class="concept"><span class="label">Core concept · Infrastructure as Code (IaC)</span>Managing and provisioning infrastructure through machine-readable definition files rather than manual setup. The same code, applied twice, yields identical environments — reproducible, reviewable, and version-controlled.</div>
+                    <div class="snip"><span class="label">Declarative IaC — describe the desired state, let the tool reconcile</span><span class="c"># Terraform: this *is* the server, in version control</span>
+resource "aws_instance" "app" {
+  ami           = "ami-0abcd1234"
+  instance_type = "t3.micro"
+  tags = { Name = "sddo-app" }
+}
+<span class="c"># terraform plan → preview · terraform apply → make it real</span></div>
+                    <div class="pitfall"><span class="label">Common pitfall</span>Configuration drift — someone fixes prod by hand, and now the running infra no longer matches the code. The whole value of IaC evaporates the first time the console is the source of truth instead of the repo. Change infrastructure only through the code.</div>
                     <div class="keyidea"><strong>Key idea</strong>A blue-green or canary release limits blast radius: you expose a change to a slice of traffic (or a parallel environment) and can roll back instantly if it misbehaves.</div>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>Know all three strategies and one sentence on what each protects against; IaC's "reproducible by re-running code" is the line examiners look for.</span></div>
                     <p class="readings"><span class="label">Notes:</span> <a href="topics/10-deployment.html">10 · Software Deployment</a></p>
                 </div>
             </div>
@@ -742,13 +892,15 @@
                     <h4>DevOps frameworks overview</h4>
                     <p class="objective">Objective: consolidate what DevOps is and the frameworks that operationalise it.</p>
                     <ul class="topics-list">
-                        <li><strong>What is DevOps?</strong> — the full definition: culture, automation, measurement, and sharing across Dev and Ops.</li>
-                        <li><strong>DevOps frameworks overview</strong> — the models (CALMS, the Three Ways) used to structure adoption.</li>
-                        <li><strong>Lean product management</strong> — maximising value while minimising waste, feeding work into the delivery pipeline.</li>
+                        <li><strong>What is DevOps?</strong> — the full definition now that you've seen the practices: culture, automation, measurement, and sharing (CAMS/CALMS) across Dev and Ops, aimed at fast, reliable, frequent delivery.</li>
+                        <li><strong>DevOps frameworks overview</strong> — the models used to structure adoption: <strong>CALMS</strong> (Culture, Automation, Lean, Measurement, Sharing) and the <strong>Three Ways</strong> (Flow, Feedback, Continual Learning). They are lenses for assessing maturity, not checklists of tools.</li>
+                        <li><strong>Lean product management</strong> — maximising value while minimising waste, pulling small batches of prioritised work into the delivery pipeline and validating them with real feedback.</li>
                     </ul>
                     <div class="concept"><span class="label">Core concept · The Three Ways</span>The principles underpinning DevOps (from <em>The DevOps Handbook</em>): Flow (fast left-to-right delivery), Feedback (fast right-to-left signals), and Continual Learning &amp; Experimentation (a culture that improves from both).</div>
+                    <div class="pitfall"><span class="label">Connects to</span>This is the conceptual hinge of the course. Everything before it (CI/CD, testing, deployment strategies) is now reframed as <em>Flow</em>; monitoring and SRE (Sessions 20, 22) are <em>Feedback</em>; the retrospective (Session 33) is <em>Continual Learning</em>. The four <em>Accelerate</em> metrics — deployment frequency, lead time, MTTR, change-fail rate — are how you measure all three.</div>
                     <div class="keyidea"><strong>Key idea</strong>DevOps frameworks don't prescribe tools — they prescribe principles. Flow, feedback, and learning survive any change of vendor.</div>
-                    <p class="readings"><span class="label">Notes:</span> <a href="readings.html">Accelerate · The DevOps Handbook</a></p>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>Memorise the Three Ways and the four <em>Accelerate</em> metrics — they are the most reusable framing on the final and the vocabulary the group project is judged against.</span></div>
+                    <p class="readings"><span class="label">Notes:</span> <a href="readings.html">Accelerate · The DevOps Handbook</a> · <span class="label">Read:</span> <em>Accelerate</em> ch. 1–2 — focus on the four delivery metrics and why they predict organisational performance.</p>
                 </div>
             </div>
         </div>
@@ -814,11 +966,13 @@
                     <h4>Scrum framework</h4>
                     <p class="objective">Objective: adopt Scrum as the operating rhythm for the team assignment.</p>
                     <ul class="topics-list">
-                        <li><strong>Scrum framework</strong> — 3 roles (Product Owner, Scrum Master, Developers), 5 events (Sprint, Planning, Daily, Review, Retrospective), 3 artifacts (Product Backlog, Sprint Backlog, Increment).</li>
-                        <li><strong>Scrum planning tools</strong> — boards and backlogs (e.g. GitHub Projects) for managing sprints.</li>
+                        <li><strong>Scrum framework</strong> — <strong>3 roles</strong> (Product Owner owns the <em>what</em> and the backlog; Scrum Master owns the <em>process</em>; Developers own the <em>how</em>), <strong>5 events</strong> (the Sprint container, plus Planning, Daily, Review, Retrospective), and <strong>3 artifacts</strong> (Product Backlog, Sprint Backlog, Increment), each with a "definition of done".</li>
+                        <li><strong>Scrum planning tools</strong> — boards and backlogs (e.g. GitHub Projects, linked to the same repo and issues) for managing the sprint: columns for To-do → In-progress → Done, items estimated and pulled into the sprint.</li>
                     </ul>
                     <div class="concept"><span class="label">Core concept · Scrum</span>A lightweight Agile <em>framework</em> for delivering work in fixed-length sprints with feedback at the start, daily, and end of each. It defines roles, events, and artifacts — not engineering practices — and exposes problems rather than solving them.</div>
+                    <div class="pitfall"><span class="label">Common pitfall</span>"Cargo-cult Scrum" — running the ceremonies (especially a status-report Daily that's really for the manager) without the inspect-and-adapt intent. The Daily is for the Developers to re-plan their day, not to report upward; a Retro whose actions are never done is theatre.</div>
                     <div class="keyidea"><strong>Key idea</strong>Scrum is a framework, not a methodology: it tells you the events and roles, not how to engineer. Running the ceremonies without the principles is cargo-cult Agile.</div>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>Learn 3 roles / 5 events / 3 artifacts cold — and actually run them on the group project, because Sessions 31–33 grade the Review and Retro you do here.</span></div>
                     <p class="readings"><span class="label">Notes:</span> <a href="topics/07-scrum.html">07 · Scrum</a></p>
                 </div>
             </div>
@@ -841,11 +995,13 @@
                     <h4>Software maintenance and operations</h4>
                     <p class="objective">Objective: make a running system observable.</p>
                     <ul class="topics-list">
-                        <li><strong>Monitoring</strong> — diagnostic settings, log analytics, and performance metrics that reveal what the system is doing in production.</li>
-                        <li><strong>Connecting an app to a monitoring service</strong> — instrumenting the application so signals flow to a dashboard.</li>
+                        <li><strong>Monitoring</strong> — the three pillars: <strong>logs</strong> (timestamped events), <strong>metrics</strong> (numeric time-series like latency and error rate), and <strong>traces</strong> (a request's path across services). Diagnostic settings and log analytics turn raw output into queryable signal.</li>
+                        <li><strong>Connecting an app to a monitoring service</strong> — instrumenting the application (a logging library, a metrics SDK, an agent) so signals flow to a dashboard and alerts fire on thresholds.</li>
                     </ul>
                     <div class="concept"><span class="label">Core concept · Observability</span>The ability to understand a system's internal state from its external outputs — logs, metrics, and traces. Monitoring tells you <em>that</em> something is wrong; observability helps you ask <em>why</em>.</div>
+                    <div class="pitfall"><span class="label">Common pitfall</span>Alert fatigue — wiring an alert to every metric until the on-call ignores them all. Alert on <em>symptoms users feel</em> (error rate, latency), not on every internal blip; this is exactly what the SLOs of Session 22 formalise.</div>
                     <div class="keyidea"><strong>Key idea</strong>You cannot operate what you cannot see. Instrumentation is part of building the feature, not an afterthought.</div>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>Logs / metrics / traces — name the three pillars and what each answers; this feeds straight into SRE's SLIs next session.</span></div>
                     <p class="readings"><span class="label">Notes:</span> <a href="topics/10-deployment.html">10 · Software Deployment</a></p>
                 </div>
             </div>
@@ -868,14 +1024,16 @@
                     <h4>Distributed architecture</h4>
                     <p class="objective">Objective: design systems that scale and evolve across independent parts.</p>
                     <ul class="topics-list">
-                        <li><strong>Loosely coupled architecture</strong> — components depend on one another as little as possible, so each can change independently.</li>
-                        <li><strong>Microservices</strong> — revisited as a distributed-systems concern (network, data consistency, failure handling).</li>
-                        <li><strong>Evolutionary architecture</strong> — designing for change so the system can be guided through incremental, reversible decisions.</li>
-                        <li><strong>Conway's Law</strong> — organisations design systems that mirror their own communication structure.</li>
+                        <li><strong>Loosely coupled architecture</strong> — components depend on one another as little as possible (via stable interfaces, async messaging), so each can change and deploy independently; the opposite is the tangle that makes a monolith hard to evolve.</li>
+                        <li><strong>Microservices</strong> — revisited as a distributed-systems concern: the network is unreliable, data consistency is now eventual not transactional, and partial failure must be designed for (timeouts, retries, circuit breakers).</li>
+                        <li><strong>Evolutionary architecture</strong> — designing for change so the system is guided through incremental, reversible decisions, with "fitness functions" (automated checks) guarding key properties as it grows.</li>
+                        <li><strong>Conway's Law</strong> — organisations design systems that mirror their own communication structure; ignoring it makes your architecture fight your org chart.</li>
                     </ul>
                     <div class="concept"><span class="label">Core concept · Conway's Law</span>"Any organisation that designs a system will produce a design whose structure copies the organisation's communication structure." In practice: your architecture will resemble your org chart — so shape the teams to get the architecture you want (the "inverse Conway manoeuvre").</div>
+                    <div class="pitfall"><span class="label">Common pitfall</span>Assuming "distributed" means "loosely coupled". A system can be spread across many services yet tightly coupled (every change touches several at once) — a distributed monolith with all the network cost and none of the independence. Coupling is about dependency, not deployment topology.</div>
                     <div class="keyidea"><strong>Key idea</strong>Architecture and org structure are two views of one thing. Loose coupling in the code requires loose coupling between the teams.</div>
-                    <p class="readings"><span class="label">Notes:</span> <a href="topics/05-architectures.html">05 · Software Architectures</a> · <a href="readings.html">Team Topologies</a></p>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>Conway's Law and the inverse manoeuvre connect this course to <em>Team Topologies</em> — a likely discussion/essay prompt on management trade-offs (objective 06).</span></div>
+                    <p class="readings"><span class="label">Notes:</span> <a href="topics/05-architectures.html">05 · Software Architectures</a> · <a href="readings.html">Team Topologies</a> · <span class="label">Read:</span> <em>Team Topologies</em> — focus on the four team types and three interaction modes.</p>
                 </div>
             </div>
         </div>
@@ -897,12 +1055,18 @@
                     <h4>DevOps operations</h4>
                     <p class="objective">Objective: operate services reliably and respond to failure systematically.</p>
                     <ul class="topics-list">
-                        <li><strong>Site Reliability Engineering (SRE)</strong> — Google's approach of applying software engineering to operations problems.</li>
-                        <li><strong>Incident management</strong> — detecting, responding to, and learning from outages (blameless post-mortems).</li>
-                        <li><strong>Continuous monitoring: SLA, SLI, SLO</strong> — the agreement, the measured indicator, and the internal objective for reliability.</li>
+                        <li><strong>Site Reliability Engineering (SRE)</strong> — Google's approach of applying software engineering to operations: automate toil away, treat reliability as a feature, and cap manual ops work so engineers keep improving the system instead of firefighting it.</li>
+                        <li><strong>Incident management</strong> — detecting, responding to, and learning from outages: clear roles (incident commander), a timeline, and a <em>blameless</em> post-mortem that fixes the system, not the person.</li>
+                        <li><strong>Continuous monitoring: SLA, SLI, SLO</strong> — built directly on the logs/metrics of Session 20: the measured indicator, the internal target, and the externally promised level.</li>
                     </ul>
                     <div class="concept"><span class="label">Core concept · SLI / SLO / SLA</span>An <strong>SLI</strong> is a measured indicator (e.g. % of fast requests); an <strong>SLO</strong> is the internal target for that indicator; an <strong>SLA</strong> is the externally promised level with consequences if missed. The gap below an SLO is the error budget that licenses change.</div>
+                    <div class="snip"><span class="label">From metric to budget</span>SLI:  99.3% of requests &lt; 300ms this month   <span class="c">(measured)</span>
+SLO:  99.0% of requests &lt; 300ms             <span class="c">(target)</span>
+SLA:  99.0% or service credits owed          <span class="c">(promised to customer)</span>
+<span class="c">→ error budget = 1.0% may be "spent" on risky releases</span></div>
+                    <div class="pitfall"><span class="label">Common pitfall</span>Setting an SLO at 100% (or letting marketing promise it). Perfect reliability is unattainable and freezes all change; the error budget exists precisely so velocity and reliability are traded openly rather than fought over.</div>
                     <div class="keyidea"><strong>Key idea</strong>100% reliability is the wrong target — it's unattainable and stifles change. An error budget makes the trade-off between reliability and velocity explicit.</div>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>Be crisp on SLI vs SLO vs SLA (measured / target / promised) and what an error budget licenses — a favourite exam discrimination.</span></div>
                     <p class="readings"><span class="label">Notes:</span> <a href="topics/11-security.html">11 · DevOps Security</a> · <a href="readings.html">Accelerate</a></p>
                 </div>
             </div>
@@ -926,12 +1090,14 @@
                     <h4>DevOps continuous delivery (I)</h4>
                     <p class="objective">Objective: establish continuous delivery and its release strategies.</p>
                     <ul class="topics-list">
-                        <li><strong>Continuous Delivery overview</strong> — keeping software in a deployable state at all times through automation.</li>
-                        <li><strong>Deployment strategies</strong> — blue-green, canary, rolling — revisited in the CD context.</li>
-                        <li><strong>DevOps quality</strong> — building quality gates into the pipeline so only good builds progress.</li>
+                        <li><strong>Continuous Delivery overview</strong> — keeping software in a deployable state at all times through automation, so a release is a decision rather than a project. The deeper version of the CI pipeline from Session 13.</li>
+                        <li><strong>Deployment strategies</strong> — blue-green, canary, rolling — revisited in the CD context, now as automated steps the pipeline orchestrates and can roll back.</li>
+                        <li><strong>DevOps quality</strong> — building quality gates into the pipeline (tests, linting, security scans, coverage thresholds) so only good builds progress; quality is enforced by the machine, not by hope.</li>
                     </ul>
                     <div class="concept"><span class="label">Core concept · Continuous Delivery</span>Every change that passes automated tests is automatically prepared for a release to production. Releasing becomes a business decision (a button press), not an engineering scramble. Continuous Deployment goes one step further and releases automatically.</div>
+                    <div class="pitfall"><span class="label">Common pitfall</span>Confusing Continuous Delivery (always <em>ready</em> to release, human presses the button) with Continuous Deployment (every green build <em>auto-releases</em>). The exam rewards the distinction; reaching for full Continuous Deployment without strong tests and monitoring ships bugs to users automatically.</div>
                     <div class="keyidea"><strong>Key idea</strong>The pipeline is where quality is enforced. A change that can't pass the gates never reaches users.</div>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>Delivery = ready to ship on demand; Deployment = ships itself. Both demand the test and monitoring discipline from earlier sessions.</span></div>
                     <p class="readings"><span class="label">Notes:</span> <a href="topics/10-deployment.html">10 · Software Deployment</a></p>
                 </div>
                 <div class="session">
@@ -939,11 +1105,20 @@
                     <h4>DevOps continuous delivery (II) — containers</h4>
                     <p class="objective">Objective: package an application to run identically anywhere.</p>
                     <ul class="topics-list">
-                        <li><strong>Docker containers introduction</strong> — packaging an app with its dependencies into a portable, isolated image.</li>
-                        <li><strong>Hands-on: running an app in a local container</strong> — building an image and running it on your machine.</li>
+                        <li><strong>Docker containers introduction</strong> — packaging an app with its dependencies into a portable, isolated <em>image</em> defined by a <code>Dockerfile</code>; a running instance of that image is a container. Image vs container is the layers-vs-running-process distinction.</li>
+                        <li><strong>Hands-on: running an app in a local container</strong> — <code>docker build</code> to create the image, <code>docker run</code> to start it, mapping a port so the host can reach the app.</li>
                     </ul>
                     <div class="concept"><span class="label">Core concept · Containers</span>A container bundles an application with everything it needs to run into a single isolated unit that shares the host OS kernel. Unlike a VM, it's lightweight and starts in seconds — and "it works on my machine" stops being an excuse because the machine ships with the code.</div>
+                    <div class="snip"><span class="label">A minimal Dockerfile</span>FROM python:3.12-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+COPY . .
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8080"]
+<span class="c"># docker build -t sddo-app .  &amp;&amp;  docker run -p 8080:8080 sddo-app</span></div>
+                    <div class="pitfall"><span class="label">Common pitfall</span>Bloated, insecure images: copying everything (including <code>.git</code> and secrets) and starting <code>FROM</code> a full OS. Use a slim/minimal base, a <code>.dockerignore</code>, and order layers so dependencies cache separately from source — small images build and deploy faster and expose less attack surface.</div>
                     <div class="keyidea"><strong>Key idea</strong>Containers make the deployment artifact and the development environment the same thing — the image you test is the image you ship.</div>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>Being able to write a basic Dockerfile is a near-certain practice-exam task and the heart of Assignment 2's containerisation.</span></div>
                     <p class="readings"><span class="label">Notes:</span> <a href="topics/10-deployment.html">10 · Software Deployment</a></p>
                 </div>
                 <div class="session">
@@ -951,10 +1126,13 @@
                     <h4>DevOps continuous delivery (III) — containers in the cloud</h4>
                     <p class="objective">Objective: run containers in cloud infrastructure through automated workflows.</p>
                     <ul class="topics-list">
-                        <li><strong>Container infrastructure in the cloud</strong> — registries, orchestration, and managed container services.</li>
-                        <li><strong>Deploying containers with GitHub workflows</strong> — building, pushing, and deploying images from a CI/CD pipeline.</li>
+                        <li><strong>Container infrastructure in the cloud</strong> — a <em>registry</em> stores built images; <em>orchestration</em> (Kubernetes, or a managed service like ECS/Cloud Run) schedules, scales, and heals running containers; managed services trade control for less ops burden.</li>
+                        <li><strong>Deploying containers with GitHub workflows</strong> — the pipeline builds the image, pushes it to the registry, and tells the platform to roll out the new tag — the Session 13 workflow, now shipping a container instead of raw code.</li>
                     </ul>
+                    <div class="concept"><span class="label">Core concept · Orchestration &amp; registry</span>A registry is the versioned store of images (the artifact); an orchestrator runs them — placing containers on hosts, restarting failed ones, scaling replicas to match load, and replacing old versions on deploy. Together they turn "a container on my laptop" into "a fleet that stays up".</div>
+                    <div class="pitfall"><span class="label">Common pitfall</span>Pushing only the <code>latest</code> tag. Without immutable version tags (e.g. the git SHA) you can't tell what's running or roll back precisely — and two deploys can silently mean different code. Tag every image with its commit.</div>
                     <div class="keyidea"><strong>Key idea</strong>Once a container deploys from a workflow, scaling and rollback become configuration, not manual operations.</div>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>build → push to registry → orchestrator rolls out: know this three-step flow; it's the production version of the local <code>docker run</code> from last session.</span></div>
                     <p class="readings"><span class="label">Notes:</span> <a href="topics/10-deployment.html">10 · Software Deployment</a></p>
                 </div>
                 <div class="session">
@@ -962,11 +1140,13 @@
                     <h4>DevOps continuous delivery (IV) — IaC modularization</h4>
                     <p class="objective">Objective: structure Infrastructure as Code so it can be reused and composed.</p>
                     <ul class="topics-list">
-                        <li><strong>Infrastructure as Code modularization</strong> — breaking IaC into reusable modules instead of one monolithic definition.</li>
-                        <li><strong>Modularization strategy for Assignment II &amp; the Group Assignment</strong> — applying modular IaC to the course projects.</li>
+                        <li><strong>Infrastructure as Code modularization</strong> — breaking IaC into small, parameterised, reusable modules (a "network" module, a "service" module) instead of one giant file, then composing them — and using the same module to stamp out identical dev / staging / prod with different inputs.</li>
+                        <li><strong>Modularization strategy for Assignment II &amp; the Group Assignment</strong> — applying modular IaC to the course projects so the team's environments are reproducible and reviewable, not hand-built.</li>
                     </ul>
                     <div class="concept"><span class="label">Core concept · IaC modularization</span>Composing infrastructure from small, parameterised, reusable modules (like functions for infrastructure) — DRY applied to provisioning, so an environment is assembled from tested building blocks.</div>
+                    <div class="pitfall"><span class="label">Connects to</span>This is Session 7's principles (DRY, single responsibility) applied to Session 14's IaC. The same trap also returns: over-modularising into so many tiny abstractions that the infrastructure becomes harder to read than the duplication it replaced.</div>
                     <div class="keyidea"><strong>Key idea</strong>The same design principles that keep code maintainable (DRY, single responsibility) apply to infrastructure once it becomes code.</div>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>"Infrastructure is just code" is the through-line — patterns, principles, and review all transfer to provisioning.</span></div>
                     <p class="readings"><span class="label">Notes:</span> <a href="topics/10-deployment.html">10 · Software Deployment</a></p>
                 </div>
             </div>
@@ -989,27 +1169,34 @@
                     <h4>DevOps security (I)</h4>
                     <p class="objective">Objective: make security a continuous, cultural part of delivery.</p>
                     <ul class="topics-list">
-                        <li><strong>DevSecOps</strong> — integrating security into every stage of the DevOps lifecycle rather than bolting it on at the end.</li>
-                        <li><strong>Secure software delivery</strong> — scanning dependencies and images, and signing artifacts in the pipeline.</li>
-                        <li><strong>Secure infrastructure</strong> — hardening the platform the software runs on.</li>
-                        <li><strong>Security culture</strong> — making security everyone's responsibility, not a separate gate.</li>
-                        <li><strong>Security frameworks</strong> — structured standards (e.g. OWASP) for assessing and improving posture.</li>
+                        <li><strong>DevSecOps</strong> — integrating security into every stage of the lifecycle rather than bolting it on at the end, with automated checks as pipeline gates so insecure builds simply don't progress.</li>
+                        <li><strong>Secure software delivery</strong> — dependency scanning (SCA) for known-vulnerable libraries, container image scanning, static analysis (SAST), and signing artifacts so you can prove what you shipped wasn't tampered with.</li>
+                        <li><strong>Secure infrastructure</strong> — hardening the platform: least-privilege IAM, closed-by-default networking, patched base images, encryption in transit and at rest.</li>
+                        <li><strong>Security culture</strong> — making security everyone's responsibility from the first commit, not a separate team's final gate; threat-modelling a feature as you design it.</li>
+                        <li><strong>Security frameworks</strong> — structured standards for assessing and improving posture, notably the <strong>OWASP Top 10</strong> (the most common web vulnerabilities — injection, broken auth, XSS) as a baseline checklist.</li>
                     </ul>
                     <div class="concept"><span class="label">Core concept · DevSecOps</span>Embedding security practices throughout the DevOps pipeline — "shifting left" so vulnerabilities are caught early, automatically, and continuously, instead of in a final audit. Security becomes a shared responsibility across Dev, Sec, and Ops.</div>
+                    <div class="pitfall"><span class="label">Common pitfall</span>"Shifting left" so hard the pipeline drowns in scanner noise that everyone overrides. Tune scanners, fail the build only on genuinely actionable findings, and pair automation with the culture so the gates are respected rather than bypassed.</div>
                     <div class="keyidea"><strong>Key idea</strong>Security found late is expensive; security automated into the pipeline is cheap. Shift it left.</div>
-                    <p class="readings"><span class="label">Notes:</span> <a href="topics/11-security.html">11 · DevOps Security</a></p>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>Know what "shift left" means and name a few automated controls (SCA, SAST, image scanning, signing) plus OWASP as the framework reference.</span></div>
+                    <p class="readings"><span class="label">Notes:</span> <a href="topics/11-security.html">11 · DevOps Security</a> · <span class="label">Read:</span> <em>The DevOps Handbook</em> security chapter — focus on integrating security into the daily pipeline.</p>
                 </div>
                 <div class="session">
                     <span class="session-num">Session 28 · Live</span>
                     <h4>DevOps security (II)</h4>
                     <p class="objective">Objective: handle secrets and identity correctly in practice.</p>
                     <ul class="topics-list">
-                        <li><strong>Secure secrets management</strong> — keeping credentials, keys, and tokens out of code and in a managed store.</li>
-                        <li><strong>Authentication &amp; 2FA</strong> — verifying identity, strengthened by a second factor.</li>
-                        <li><strong>Hands-on: cloud secret management</strong> — using a cloud vault to inject secrets at runtime.</li>
+                        <li><strong>Secure secrets management</strong> — keeping credentials, keys, and tokens out of code and in a managed store (a vault, or GitHub Actions secrets), so they can be rotated and audited centrally.</li>
+                        <li><strong>Authentication &amp; 2FA</strong> — verifying identity (something you know) strengthened by a second factor (something you have/are); the difference between authentication (who you are) and authorization (what you may do).</li>
+                        <li><strong>Hands-on: cloud secret management</strong> — using a cloud vault to inject secrets at runtime (as env vars or mounted files) so the artifact stays secret-free.</li>
                     </ul>
                     <div class="concept"><span class="label">Core concept · Secrets management</span>Storing and accessing sensitive values (passwords, API keys, certificates) through a dedicated, access-controlled service rather than hard-coding them — so secrets can be rotated, audited, and never committed to version control.</div>
+                    <div class="snip"><span class="label">Inject at runtime — never bake into the image or commit</span><span class="c"># .env and real keys are git-ignored; code reads from the environment</span>
+db_url = os.environ["DATABASE_URL"]       <span class="c"># injected by the vault / CI</span>
+<span class="c"># in GitHub Actions: env: DATABASE_URL: ${{ secrets.DATABASE_URL }}</span></div>
+                    <div class="pitfall"><span class="label">Common pitfall</span>A secret committed once is leaked forever — rotating it is the only real fix, because git history (and every clone and fork) still holds the old value. This is why Session 3 insisted on <code>.gitignore</code> before the first commit.</div>
                     <div class="keyidea"><strong>Key idea</strong>A secret in the repository is a secret already leaked. Inject secrets at runtime from a vault, never bake them into the artifact.</div>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>Secrets at runtime, never in the repo or image; auth ≠ authz; 2FA adds a factor. These are easy, certain marks if stated precisely.</span></div>
                     <p class="readings"><span class="label">Notes:</span> <a href="topics/11-security.html">11 · DevOps Security</a></p>
                 </div>
             </div>
@@ -1032,11 +1219,16 @@
                     <h4>SysAdmin basics (I)</h4>
                     <p class="objective">Objective: access and secure remote systems the way operators do.</p>
                     <ul class="topics-list">
-                        <li><strong>VPN, SSH tunnelling, port forwarding</strong> — encrypted channels for reaching private services securely.</li>
-                        <li><strong>UNIX user roles</strong> — users, groups, and permission bits that govern who can do what on a system.</li>
+                        <li><strong>VPN, SSH tunnelling, port forwarding</strong> — encrypted channels for reaching private services securely: a VPN puts you "inside" the network; SSH local port forwarding tunnels a remote service to your localhost without exposing it publicly.</li>
+                        <li><strong>UNIX user roles</strong> — users, groups, and the read/write/execute permission bits (owner / group / other) that govern who can do what; <code>root</code> is all-powerful, so day-to-day work uses unprivileged users and <code>sudo</code>.</li>
                     </ul>
                     <div class="concept"><span class="label">Core concept · SSH &amp; least privilege</span>SSH provides an encrypted channel to a remote host; tunnelling and port forwarding extend it to reach otherwise-private services. UNIX permissions enforce least privilege — each user and process gets only the access it needs.</div>
+                    <div class="snip"><span class="label">SSH key auth + a tunnel to a private database</span>ssh -i ~/.ssh/id_ed25519 deploy@server          <span class="c"># key-based login, no password</span>
+ssh -L 5432:db.internal:5432 deploy@server      <span class="c"># reach a private DB at localhost:5432</span>
+chmod 600 ~/.ssh/id_ed25519                      <span class="c"># rw for owner only — sshd refuses loose keys</span></div>
+                    <div class="pitfall"><span class="label">Common pitfall</span><code>chmod 777</code> "to make it work". It grants everyone full access and is a classic security hole; private keys must be <code>600</code> or SSH rejects them. Default to the least permission that works, not the most.</div>
                     <div class="keyidea"><strong>Key idea</strong>Most production access flows over SSH; understanding permissions and tunnelling is the difference between operating a server and locking yourself out of it.</div>
+                    <div class="takeaway"><span class="label">Takeaway</span><span>Read a permission string like <code>rwxr-x---</code> and explain a port-forward command — concrete, examinable sysadmin skills under every managed cloud service.</span></div>
                 </div>
                 <div class="session">
                     <span class="session-num">Session 30 · Live</span>
@@ -1108,7 +1300,7 @@
             <div>
                 <span class="eyebrow">Vocabulary</span>
                 <h2>Key concepts</h2>
-                <p>The terms that recur across the course, in one place. Roughly the order they appear in the program.</p>
+                <p>The terms that recur across the course — around fifty, in one place. Roughly the order they appear in the program; a fast revision checklist before either exam.</p>
             </div>
         </div>
         <dl class="glossary">
@@ -1143,6 +1335,42 @@
             <div class="term"><dt>DevSecOps</dt><dd>Embedding automated security throughout the DevOps pipeline — "shifting security left" so issues are caught early.</dd></div>
             <div class="term"><dt>Secrets management</dt><dd>Storing credentials and keys in an access-controlled service, injected at runtime, never committed to code.</dd></div>
             <div class="term"><dt>Lean</dt><dd>A management philosophy of maximising value while eliminating waste, feeding prioritised work into the delivery flow.</dd></div>
+            <div class="term"><dt>Waterfall</dt><dd>A sequential SDLC model where each phase is completed and signed off before the next begins; suits stable requirements, struggles with change.</dd></div>
+            <div class="term"><dt>V-model</dt><dd>A Waterfall variant pairing each development phase with a corresponding testing phase, so verification is planned from the start.</dd></div>
+            <div class="term"><dt>Singleton / Builder / Factory</dt><dd>The three creational patterns of the course: one shared instance; step-by-step construction; deferred choice of concrete class.</dd></div>
+            <div class="term"><dt>Adapter / Proxy / Facade</dt><dd>The three structural patterns: change an interface; guard the same interface; simplify a subsystem behind one.</dd></div>
+            <div class="term"><dt>Observer / Strategy / Command</dt><dd>The three behavioural patterns: notify dependents; swap algorithms at runtime; turn a request into a storable object.</dd></div>
+            <div class="term"><dt>YAGNI</dt><dd>"You Aren't Gonna Need It" — don't build speculative features; the discipline that keeps DRY and abstraction from over-engineering.</dd></div>
+            <div class="term"><dt>Technical debt</dt><dd>The future cost of a quick-and-dirty choice made now; like financial debt it accrues interest until paid down by refactoring.</dd></div>
+            <div class="term"><dt>REST</dt><dd>An API style addressing resources by URL and acting on them with HTTP verbs (GET/POST/PUT/DELETE), exchanging JSON, status codes signalling outcome.</dd></div>
+            <div class="term"><dt>Layered (N-tier) architecture</dt><dd>Organising a system into presentation, business-logic, and data layers, each depending only on the one below it.</dd></div>
+            <div class="term"><dt>HTTP framework</dt><dd>A library that routes requests to handler functions and runs middleware around them (Flask, FastAPI, Express).</dd></div>
+            <div class="term"><dt>Middleware</dt><dd>Code that runs around every request — auth, logging, CORS, error handling — keeping cross-cutting concerns out of handlers.</dd></div>
+            <div class="term"><dt>Migration</dt><dd>A version-controlled, ordered change to a database schema, so the schema evolves in step with the code that uses it.</dd></div>
+            <div class="term"><dt>Unit / Integration / E2E</dt><dd>The three main test levels: a piece in isolation; pieces together; the whole system as a user would drive it.</dd></div>
+            <div class="term"><dt>GitHub Actions</dt><dd>GitHub's automation engine: YAML workflows of jobs and steps, triggered by events, running on hosted runners — the course's CI/CD tool.</dd></div>
+            <div class="term"><dt>Artifact</dt><dd>The versioned output of a build (a binary, a package, a container image) that is promoted unchanged through environments.</dd></div>
+            <div class="term"><dt>Blue-green / Canary / Rolling</dt><dd>Deployment strategies: swap between two environments; release to a small slice first; replace instances batch by batch.</dd></div>
+            <div class="term"><dt>Docker image vs container</dt><dd>An image is the built, layered template; a container is a running instance of it — class vs object, for deployment.</dd></div>
+            <div class="term"><dt>Dockerfile</dt><dd>The declarative recipe (base image, dependencies, copy, command) from which a container image is built.</dd></div>
+            <div class="term"><dt>Registry</dt><dd>A versioned store of container images (e.g. GitHub Container Registry, Docker Hub) that orchestrators pull from to deploy.</dd></div>
+            <div class="term"><dt>Orchestration</dt><dd>Scheduling, scaling, and healing containers across hosts (Kubernetes, ECS, Cloud Run) — running a fleet rather than one container.</dd></div>
+            <div class="term"><dt>Cloud-native</dt><dd>Building for the cloud from the start — containers, managed services, elastic scaling, automation — the substrate DevOps assumes.</dd></div>
+            <div class="term"><dt>The Three Ways</dt><dd>DevOps's guiding principles: Flow (fast delivery), Feedback (fast signals), and Continual Learning &amp; Experimentation.</dd></div>
+            <div class="term"><dt>CALMS</dt><dd>A DevOps maturity lens: Culture, Automation, Lean, Measurement, Sharing.</dd></div>
+            <div class="term"><dt>Accelerate metrics</dt><dd>The four delivery metrics that predict performance: deployment frequency, lead time for changes, change-fail rate, and MTTR.</dd></div>
+            <div class="term"><dt>MTTR</dt><dd>Mean Time To Recovery — how quickly service is restored after an incident; a key reliability metric favouring fast recovery over rare failure.</dd></div>
+            <div class="term"><dt>Error budget</dt><dd>The allowed unreliability under an SLO (e.g. the 1% below 99%); it licenses risk-taking and releases until spent.</dd></div>
+            <div class="term"><dt>Blameless post-mortem</dt><dd>An incident review focused on fixing the system and process, not assigning fault — so people report honestly and the system learns.</dd></div>
+            <div class="term"><dt>Logs / Metrics / Traces</dt><dd>The three pillars of observability: discrete events; numeric time-series; a request's path across services.</dd></div>
+            <div class="term"><dt>Scrum roles / events / artifacts</dt><dd>3 / 5 / 3 — PO, Scrum Master, Developers; Sprint, Planning, Daily, Review, Retrospective; Product Backlog, Sprint Backlog, Increment.</dd></div>
+            <div class="term"><dt>Sprint Review vs Retrospective</dt><dd>Review inspects <em>what</em> was built (demo to stakeholders); Retrospective inspects <em>how</em> the team worked (process improvement).</dd></div>
+            <div class="term"><dt>OWASP Top 10</dt><dd>A widely-used baseline list of the most critical web application security risks — the reference framework for the security sessions.</dd></div>
+            <div class="term"><dt>Authentication vs Authorization</dt><dd>Authentication proves <em>who</em> you are; authorization decides <em>what</em> you're allowed to do — distinct steps.</dd></div>
+            <div class="term"><dt>2FA</dt><dd>Two-Factor Authentication — requiring a second factor (a code, a device) beyond the password, so a leaked password alone isn't enough.</dd></div>
+            <div class="term"><dt>SSH</dt><dd>Secure Shell — an encrypted channel to a remote host; with port forwarding it tunnels access to otherwise-private services.</dd></div>
+            <div class="term"><dt>Least privilege</dt><dd>Granting each user, process, or service only the access it strictly needs — the default posture for permissions and IAM.</dd></div>
+            <div class="term"><dt>Configuration drift</dt><dd>When running infrastructure diverges from its IaC definition because of manual changes — the failure mode IaC exists to prevent.</dd></div>
         </dl>
     </div>
 </section>
